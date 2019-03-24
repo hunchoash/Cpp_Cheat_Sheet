@@ -166,7 +166,7 @@
 
 #
 
-##`Token Summery`
+## `Token Summery`
 
 |               `Token Class`            |                 `Example`               |       `REFERENCE`      |
 |----------------------------------------|:----------------------------------------|-----------------------:|
@@ -182,7 +182,7 @@
 
 #
 
-##`Alternative Representation`
+## `Alternative Representation`
 
 |   `TYPEDEF`     |     `OPERATOR`      |
 |-----------------|---------------------|
@@ -210,7 +210,7 @@
 |                 |                     |
 
 
-##Shortcut to copy strings
+## Shortcut to copy strings
 
     while (∗p++ = ∗q++);
 
@@ -1046,7 +1046,7 @@ a member-style initializer using the class’s own name (its constructor name) c
 
 *default* states that we are allowing the default copy, move or destaructor ( which compiler provides us by defualt ). __If a class has a pointer member, it probably needs a destructor and non-default copy operations__
 
-####Rules: <Magic 5 Statements>
+#### Rules: <Magic 5 Statements>
 
     // lets take an example:
 
@@ -1135,7 +1135,8 @@ well u might be wondering whats the fucking use of this shit well, lemme halla @
 
 ##
 
-###**`virtual`** 
+### **`virtual`**
+
 is a keyword thats specifies that the function is to be overriden by its derived class. There are two types of virtual functions _virtual_ and _pure virtual_. 
 IMP note bout virtual functions is that if u have at least 1 virtual function u need virtual distructor for that.
 
@@ -1160,10 +1161,11 @@ IMP note bout virtual functions is that if u have at least 1 virtual function u 
 
 ###
 
-###**`override`** **`final`**
+### **`override`** and **`final`**
+
 override and final are whats called a contextual keyword. which means for example if u declare an object or a variable or anything with name **override** or **final** they dont mean nothin compiler is gonna treat em as just name, so to make use of em (what they meant to be used for) u need to declare em at the end of the fucntion that u wanna override. like literally at the end of the function declaration for ex. `void foo() override final {}`.
 
-###override:
+### override:
 so override is a keyword which specifies that the function is gon get overriden. like normally people dont say override when they are overriding a virtual fucntion from the base class. but it looks cool and helps maintian the code.
 
     // ex:
@@ -1181,7 +1183,7 @@ so override is a keyword which specifies that the function is gon get overriden.
             override = 12;  // again this override doesnt mean nothin its just name of an int we declared in out base class above.
     };
 
-###final
+### final
 so, in my opinion final is pretty cool cus it doesnt let u override an object again cus its litteraly final. u feel me? so the idea here is if u got a virtual function in yo base class and u wanna override it but dont want any other classes to fuck w/ it again u use override (exmaple below might explain it better ig.) and if u try to override it BOOM its an erro.
 
     class B {
@@ -1214,11 +1216,11 @@ so, in my opinion final is pretty cool cus it doesnt let u override an object ag
         void print() override {}        // error: hell nah its final, can't do it!
     }
 
-##Smart Pointers
+## Smart Pointers
 
 smart pointers are used to make sure the object is deleted if it is no longer used (refrenced)(e.g: when object goes out of scope) there are basically 2 types of STL smart pointers available for us.
 
-###**unique_ptr**: 
+### **unique_ptr**: 
 this template holds a pointer to an object and deleted this object when *unique_ptr<>* is deleted. so your lazy ass dont need to explicitly say *delete*, the *unique_ptr* destructor is always called so the element that u stored on the free stored is always deleted s **No Memory Leaks**.
 
 As the name implies make sure only exactly one copy of an object exists. *unique_ptr<>* does not support copying if u try to copy u gon get compile time errors but it supports move semantcis obviously **Note: if a unique pointer already holds pointer to an existing object then that object gets deleted and new pointer is stored e.g: `unique_ptr<int> ptr; ptr.reset( new int{13} );`
@@ -1245,7 +1247,7 @@ The interface that unique_ptr provides is very similar to the ordinary pointer b
 
     }
 
-###**shared_ptr**: 
+### **shared_ptr**: 
 
 The shared pointer is a reference counting smart pointer that can be used to store and pass the reference beyond the scope of a function,this is pirtucularly useful int he context of the OOP. to store a pointer as a member variable and return it to access the value outside the scope of the class.
 
@@ -1318,7 +1320,7 @@ by default shared_ptr called delete even if u have an array allocated, so to ove
 
 ###
 
-###**weak_ptr**:
+###  **weak_ptr**:
 A weak pointer provides sharing semantics and not owning semantics. This means a weak pointer can share a resource held by a shared_ptr. So to create a weak pointer, some body should already own the resource which is nothing but a shared pointer.
 
 A weak pointer does not allow normal interfaces supported by a pointer, like calling *, ->. Because it is not the owner of the resource and hence it does not give any chance for the programmer to mishandle it. Then how do we make use of a weak pointer?
@@ -1345,7 +1347,7 @@ The answer is to create a shared_ptr out of a weak _ptr and use it. Because this
 
 
 ###
-#boost::asio
+# boost::asio
 some quick notes bout bost asio, so i hade a basic asio progarm and it took me 100 hours to figure out which files i need to link in order to compile (found stack overflow post - thanks to the answerer) and these are the three files u need to link in order to use boost::asio, can't they put it in their docs, fuckk!
         
         c++ -I /path/to/boost_1_67_0 example.cpp -o example -lpthread -lboost_system -lboost_signals ( -lboost_thread -  if u are using thread.)

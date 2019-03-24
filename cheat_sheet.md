@@ -166,7 +166,7 @@
 
 #
 
-##`Token Summery`
+## `Token Summery`
 
 |               `Token Class`            |                 `Example`               |       `REFERENCE`      |
 |----------------------------------------|:----------------------------------------|-----------------------:|
@@ -210,7 +210,7 @@
 |                 |                     |
 
 
-##Shortcut to copy strings
+## Shortcut to copy strings
 
     while (∗p++ = ∗q++);
 

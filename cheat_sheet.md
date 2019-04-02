@@ -1,8 +1,55 @@
-## C++
+* [Introduction](#introduction)
+* [Initialization](#initialization)
+* [Limits](#limits)
+* [Conversion / Casting](#conversion--casting)
+* [Errors](#errors)
+* [Operators](#operators)
+    * [Token Summery](#token-summery)
+    * [Alternative Representation](#alternative-representation)
+* [Shortcut to copy strings](#shortcut-to-copy-strings)
+* [Function Pointer](#function-pointer)
+* [OS  MACROS C/C++](#os--macros-cc)
+* [Casting Types](#casting-types)
+    * [Static Cast](#static-cast) 
+    * [Const Cast](#const-cast) 
+    * [Dynamic Cast](#dynamic-cast)
+    * [Reinterpret Cast](#reinterpret-cast)
+* [Types of function declerations](#types-of-function-declerations)
+    * [Rule of thumb for passing values](#rule-of-thumb-for-passing-values)
+* [Specify the size of the array while passed it to a fucntion](#specify-the-size-of-the-array-while-passed-it-to-a-fucntion)
+* [Ellipsis](#ellipsis)
+* [Some predifined Macros](#some-predifined-macros)
+* [Memory measurement chart](#memory-measurement-chart)
+* [Stop Execution of the program for some time](#stop-execution-of-the-program-for-some-time)
+* [Color and text Prefferences](#color-and-text-prefferences)
+* [Get size of console window](#get-size-of-console-window)
+* [Assertions](#assertions)
+* [Convert boolean expressions into strings](#convert-boolean-expressions-into-strings)
+* [Invoke Functions After Returnting from the main()](#invoke-functions-after-returnting-from-the-main)
+* [explicit](#explicit)
+* [const member functions](#const-member-functions)
+* [mutable](#mutable)
+* [static member](#static-member)
+* [print UTF-8 characters to the console](#print-utf-8-characters-to-the-console)
+* [Delegating Constructor](#delegating-constructor)
+    * [`= delete` and `= default`](#-delete-and--default)
+* [virtual](#virtual)
+* [**`override`** and **`final`**](#override-and-final)  
+    * [override](#override)
+    * [final](#final)
+* [Smart Pointers](#smart-pointers)
+    * [unique_ptr](#unique_ptr)
+    * [shared_ptr](#shared_ptr)
+    * [weak_ptr](#weak_ptr)
+* [boost::asio](#boostasio)
+
+##Introduction
+i made this just so i dont have to google every freakn thing, i could just serach it up here and if it aint here then i can google it. its handy tbh!
+tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-# Initialization:
+##Initialization
 
 **don't ever us this**
 
@@ -37,10 +84,9 @@
         f({9});   // OK: f is called with the list {9}
     }
 
-
 ---------------------------------------------------------------------------
 
-# Limits
+##Limits 
 
 **max Double**
 
@@ -60,7 +106,7 @@
 
 ---------------------------------------------------------------------------
 
-# Conversion / Casting
+##Conversion / Casting
 
 **Pointer, integral and floating-point values can be implicitly converted to bool**
 *a nonzero value converts to true and zero value converts to false*
@@ -76,7 +122,7 @@
 
 ---------------------------------------------------------------------------
 
-# Errors
+##Errors
 
 **throw runtime error**
     
@@ -85,7 +131,7 @@
 
 ---------------------------------------------------------------------------
 
-# Operators
+##Operators
 
 
 |               `USE`                    |                 `SYNTAX`                |       `REFERENCE`      |
@@ -166,7 +212,7 @@
 
 #
 
-## `Token Summery`
+### `Token Summery`
 
 |               `Token Class`            |                 `Example`               |       `REFERENCE`      |
 |----------------------------------------|:----------------------------------------|-----------------------:|
@@ -182,7 +228,7 @@
 
 #
 
-## `Alternative Representation`
+### `Alternative Representation`
 
 |   `TYPEDEF`     |     `OPERATOR`      |
 |-----------------|---------------------|
@@ -215,7 +261,7 @@
     while (∗p++ = ∗q++);
 
 
-# Function Pointer
+## Function Pointer
 
     void doSome(int a) {
         std::cout << "Do something w/ " << a << '\n';
@@ -265,7 +311,7 @@
     doPtr[ch](12); // invoke function by index
 
 
-# OS  MACROS C/C++
+## OS  MACROS C/C++
 
     _WIN32          // Windows 32 Bit
     _WIn64          // Windows 64 Bit
@@ -307,10 +353,11 @@
         
     }
 
+----------------------------------
 
-# Casting Types
+##Casting Types
 
-## Static Cast
+### Static Cast
 
 this is a compile time cast and does things like implicit conversion between types (int, float or pointer to void* and it can also call explicit conversion fuctions) (or implicit ones).
 
@@ -324,7 +371,7 @@ this is a compile time cast and does things like implicit conversion between typ
     int *x = static_cast<int *>(p);
 
 
-## Const Cast
+### Const Cast
 
 const cast is used to cast away the constness of variable, const cast can be used to change non-const class members inside a function, const cast can be used to pass const data to a function that doesn't allow const
 
@@ -348,7 +395,7 @@ const cast is used to cast away the constness of variable, const cast can be use
     // same as above...
 
 
-## Dynamic Cast
+### Dynamic Cast
 
 dynamic cast works at runtime rather than compile time like static cast, DC can work only in polymorphic types
 
@@ -372,7 +419,7 @@ dynamic cast works at runtime rather than compile time like static cast, DC can 
     C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast
 
 
-## Reinterpret Cast
+### Reinterpret Cast
 
 RC is used to convert one pointer of another pointer of any type, no matter wither the class is related to each other or not. it does not check if the pointer type and the data pointed by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
 
@@ -388,9 +435,9 @@ RC is used to convert one pointer of another pointer of any type, no matter with
     cout <<  p << '\n';     // 0x902bf;
     cout <<  ch << '\n';    // A;
 
+---------------------
 
-
-# Types of function declerations
+## Types of function declerations
 
 - **inline** - indicating a desire to have function calls implemented by inlining the function body    
 - **constexpr** - indicating that it should be possible to evaluate the function at compile time if given constant expressions as arguments  
@@ -410,12 +457,12 @@ RC is used to convert one pointer of another pointer of any type, no matter with
             [[noreturn]] virtual inline auto f(const unsigned long int ∗const) −> void const noexcept;
         };
 
-## You can also define return type of a function like following
+###You can also define return type of a function like following
 
     auto f(void) -> int { } // int is a return type of this function.
 
 
-## Rule of thumb for passing values
+###Rule of thumb for passing values
 
 - Use pass-by-value for small objects.
 - Use pass-by- const -reference to pass large values that you don’t need to modify.
@@ -424,8 +471,9 @@ RC is used to convert one pointer of another pointer of any type, no matter with
 - Pass a pointer if ‘‘no object’’ is a valid alternative (and represent ‘‘no object’’ by nullptr ).
 - Use pass-by-reference only if you have to.
 
+----------------------
 
-## Specify the size of the array while passed it to a fucntion
+##Specify the size of the array while passed it to a fucntion
 
     void f(int(&arr)[4]); // size = 4
 
@@ -455,9 +503,9 @@ RC is used to convert one pointer of another pointer of any type, no matter with
 
     f(int, 5)(arr); // Error. size != size of the arr
 
+-----------------
 
-
-## Ellipsis
+##Ellipsis
 
 **syntax:**
     
@@ -515,7 +563,8 @@ RC is used to convert one pointer of another pointer of any type, no matter with
     }
 
 
-####
+<br>
+
     Output: 
     3
     3.5
@@ -585,13 +634,14 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
     }
 
 
-####
+<br>
+
     Output: 
     3.33333
     1.43333
 
 
-## Some predifined Macros
+##Some predifined Macros
 
 - `__cplusplus` defined in a C++ cpmpilation (not in C), its value is 201103L
 - `__DATE__` date in ***yyyy:mm:dd*** format
@@ -605,8 +655,9 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 - `__STDCPP_THREADS` ***1*** if the program can have more than one thread of execution, ohterwise ***undefined***
 
 
+---------------------
 
-# Memory measurement chart
+##Memory measurement chart
 
 | `Data Measurement` |       `Size`          |
 |--------------------|-----------------------|
@@ -619,8 +670,9 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 | 1 - Petabyte       |  1024 Tbs             |
 | 1 - Exhabyte       |  1024 Pbs             |
 
+------------------
 
-## Stop Execution of the program for some time
+##Stop Execution of the program for some time
 
     #include <iostream>
     #include <chrono>
@@ -637,14 +689,14 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
         } 
     }
  
-
-# Color and text Prefferences
+----------------
+##Color and text Prefferences
 
 **`Unix Specific`**
 
     "\033[1;31m" <cutom text> "\033[0m"
     
-####
+<br>
 
 
 |  `Color` |  `FG` | `BG`  |
@@ -658,7 +710,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 | cyan     |  36   |   46  |
 | white    |  37   |   47  |
 
-####
+<br>
 
 |  `USE`              |`VAL` |
 |---------------------|------|
@@ -671,9 +723,9 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 | inverse off         |   27 |
 
 
-#
+<br>
 
-# Get size of console window
+##Get size of console window
 
 **`Windows`**
 
@@ -704,8 +756,9 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
         sz.ws_col   // Width
     }
 
+------------------
 
-# Assertions
+##Assertions
 Assertions are statements used to test assumptions made by programmer, for example we may use assertion to check wether pointer returned by malloc is NULL or not. If the expression evaluates to 0 (false) then expression, sourcode filename, line number are sent thru the stderr and then abort function is called
 
 `Syntax`
@@ -733,7 +786,8 @@ Assertions are statements used to test assumptions made by programmer, for examp
 
     }
 
-#
+<br>
+
     // output
     Assertion failed: x == 7, test.cpp, line 13
 
@@ -799,8 +853,9 @@ this*  unconditionally checks its condition at comoile time, if the assertion fa
         swap(nc_a, nc_b);       // assertion faile: message: swap requires copying.
     }
 
+---------------
 
-## convert boolean expressions into strings
+##Convert boolean expressions into strings
 
 by default 1 : true and 0 : false so, if wanna get it in a string litteral we can use std::boolalpha
 
@@ -808,8 +863,9 @@ by default 1 : true and 0 : false so, if wanna get it in a string litteral we ca
     std::cout << b;                       // 1
     std::cout << std::boolalpha << x      // true
 
+------------------
 
-## Invoke Functions After Returnting from the main() 
+##Invoke Functions After Returnting from the main() 
 
 **`atexit(void*());`**
 
@@ -852,14 +908,15 @@ by default 1 : true and 0 : false so, if wanna get it in a string litteral we ca
         std::quick_exit(0); // leave toilet w/t cleaning the shit.
     }
 
-####
+<br>
+
     // output
     leaving toilet w/t cleaning the shit.
     Fuck Yeah Babie!
 
-###
+------
 
-# explicit 
+##explicit 
 
 explicit initialization is also known as direct initialization, A constructor declared with the keyword explicit can only be used for initialization and explicit conversions.
 
@@ -877,14 +934,16 @@ explicit initialization is also known as direct initialization, A constructor de
     Date d4 = 15;           // error : = initialization does not do implicit conversions
     
 
-##
+<br>
 
-# const member functions
+-----------
+
+##const member functions
 
 The const after the (empty) argument list in the function declarations indicates that these functions do not modify the state of a Class .
 in simle words if we got a private memeber for ex. x in const function we cannot modify it for ex. do ++x or x += 1, one thing to remeber bout const functions is that they are read only objects.
 
-    // e.g:
+`Example`
 
     class Date {
         int d, m, y;
@@ -907,7 +966,7 @@ in simle words if we got a private memeber for ex. x in const function we cannot
     }
 
 
-imp thing bout the const is that if u make a object const then its functions and shit also has to const member functions ig.
+**imp** thing bout the const is that if u make a object const then its functions and shit also has to const member functions ig.
 
     // e.g:
 
@@ -924,13 +983,15 @@ imp thing bout the const is that if u make a object const then its functions and
     B.smn();     // Error: smn is not a const member function
     B.scnd();    // Ok.
         
-##
+<br>
 
-# mutable
+-----------
+
+##mutable
 
 mutable is a storage class specifier just like for ex: static, register, extern and auto. Sometimes there is requirement to modify one or more data members of class / struct through const function even though you don’t want the function to update other members of class / struct. This task can be easily performed by using mutable keyword.
 
-    // e.g:
+`example`
 
     class Date {
         int d, m;
@@ -954,8 +1015,9 @@ mutable is a storage class specifier just like for ex: static, register, extern 
         return m += 1    // error : attempt to change member value in const function
     }
 
+-----------
 
-## static member
+##static member
 
 A variable that is part of a class, yet is not part of an object of that class, is called a static member. There is exactly one copy of a static member instead of one copy per object, as for ordinary non- static members Similarly, a function that needs access to members of a
 class, yet doesn’t need to be invoked for a particular object, is called a static member function.
@@ -1007,16 +1069,17 @@ class, yet doesn’t need to be invoked for a particular object, is called a sta
         return 0;     
     }
 
-####
+<br>
+
     // output: ( aphcourse if we dont do F::doit() )
 
     20i'm static
     i'm static
 
 
-###
+---------
 
-## print UTF-8 characters to the console
+##print UTF-8 characters to the console
 
     std::locale old_locale;  // current locale
     setlocale(LC_ALL, "en_US.UTF-8");
@@ -1024,9 +1087,11 @@ class, yet doesn’t need to be invoked for a particular object, is called a sta
     std::wcout << w << std::endl;
     setlocale(LC_ALL, old_locale.name().c_str());
 
-###
+<br>
 
-## Delegating Constructor
+------------
+
+##Delegating Constructor
 
 a member-style initializer using the class’s own name (its constructor name) calls another constructor as part of the construction. Such a constructor is called a delegating constructor (and occasionally a forwarding constructor).
 
@@ -1040,13 +1105,14 @@ a member-style initializer using the class’s own name (its constructor name) c
     };
 
 
-###
+
+-------
 
 ### `= delete` and `= default`
 
 *default* states that we are allowing the default copy, move or destaructor ( which compiler provides us by defualt ). __If a class has a pointer member, it probably needs a destructor and non-default copy operations__
 
-#### Rules: <Magic 5 Statements>
+#### Rules: *5 Statements Statements*
 
     // lets take an example:
 
@@ -1062,7 +1128,7 @@ a member-style initializer using the class’s own name (its constructor name) c
         ~Foo();                     // destructor
     };
 
-####
+<br>
 
 in example above if we define at least one of em then compiler aint gon generate any of them for us. cus it aint secure.
  
@@ -1080,7 +1146,7 @@ in example above if we define at least one of em then compiler aint gon generate
             ~Foo();                     = default
         };
 
-####
+<br>
 
 *delete* We can ‘‘delete’’ a function; that is, we can state that a function does not exist so that it is an error to try to use it (implicitly or explicitly).
 
@@ -1110,7 +1176,8 @@ in example above if we define at least one of em then compiler aint gon generate
     }
 
 
-####
+<br>
+
 well u might be wondering whats the fucking use of this shit well, lemme halla @ u real quick and tell u that one use case would be to control where the object will be stored like on the `free store` or `stack`.
 
     // e.g:
@@ -1133,9 +1200,11 @@ well u might be wondering whats the fucking use of this shit well, lemme halla @
 
     // However, we can never delete that Not_on_stack object. The alternative technique of making the destructor private can address that problem.
 
-##
+<br>
 
-### **`virtual`**
+-----------
+
+## **`virtual`**
 
 is a keyword thats specifies that the function is to be overriden by its derived class. There are two types of virtual functions _virtual_ and _pure virtual_. 
 IMP note bout virtual functions is that if u have at least 1 virtual function u need virtual distructor for that.
@@ -1159,16 +1228,18 @@ IMP note bout virtual functions is that if u have at least 1 virtual function u 
         void g() { cout << " in D \n"; }
     };
 
-###
+<br>
 
-### **`override`** and **`final`**
+--------
+
+##**`override`** and **`final`**
 
 override and final are whats called a contextual keyword. which means for example if u declare an object or a variable or anything with name **override** or **final** they dont mean nothin compiler is gonna treat em as just name, so to make use of em (what they meant to be used for) u need to declare em at the end of the fucntion that u wanna override. like literally at the end of the function declaration for ex. `void foo() override final {}`.
 
-### override:
+###override:
 so override is a keyword which specifies that the function is gon get overriden. like normally people dont say override when they are overriding a virtual fucntion from the base class. but it looks cool and helps maintian the code.
 
-    // ex:
+`example`
     
     class B {
         public:
@@ -1183,7 +1254,7 @@ so override is a keyword which specifies that the function is gon get overriden.
             override = 12;  // again this override doesnt mean nothin its just name of an int we declared in out base class above.
     };
 
-### final
+###final
 so, in my opinion final is pretty cool cus it doesnt let u override an object again cus its litteraly final. u feel me? so the idea here is if u got a virtual function in yo base class and u wanna override it but dont want any other classes to fuck w/ it again u use override (exmaple below might explain it better ig.) and if u try to override it BOOM its an erro.
 
     class B {
@@ -1216,11 +1287,15 @@ so, in my opinion final is pretty cool cus it doesnt let u override an object ag
         void print() override {}        // error: hell nah its final, can't do it!
     }
 
-## Smart Pointers
+<br>
+
+----------
+
+##Smart Pointers
 
 smart pointers are used to make sure the object is deleted if it is no longer used (refrenced)(e.g: when object goes out of scope) there are basically 2 types of STL smart pointers available for us.
 
-### **unique_ptr**: 
+###unique_ptr 
 this template holds a pointer to an object and deleted this object when *unique_ptr<>* is deleted. so your lazy ass dont need to explicitly say *delete*, the *unique_ptr* destructor is always called so the element that u stored on the free stored is always deleted s **No Memory Leaks**.
 
 As the name implies make sure only exactly one copy of an object exists. *unique_ptr<>* does not support copying if u try to copy u gon get compile time errors but it supports move semantcis obviously **Note: if a unique pointer already holds pointer to an existing object then that object gets deleted and new pointer is stored e.g: `unique_ptr<int> ptr; ptr.reset( new int{13} );`
@@ -1247,7 +1322,7 @@ The interface that unique_ptr provides is very similar to the ordinary pointer b
 
     }
 
-### **shared_ptr**: 
+###shared_ptr 
 
 The shared pointer is a reference counting smart pointer that can be used to store and pass the reference beyond the scope of a function,this is pirtucularly useful int he context of the OOP. to store a pointer as a member variable and return it to access the value outside the scope of the class.
 
@@ -1318,9 +1393,7 @@ u can also use std::make_shared<T>() to assign the values and ptr.use_count() to
 by default shared_ptr called delete even if u have an array allocated, so to overcome this problem we can use a lambda.
 `std::shared_ptr<int> arr (new int[3], [](int* p) { delete[] p; } );`
 
-###
-
-###  **weak_ptr**:
+###weak_ptr
 A weak pointer provides sharing semantics and not owning semantics. This means a weak pointer can share a resource held by a shared_ptr. So to create a weak pointer, some body should already own the resource which is nothing but a shared pointer.
 
 A weak pointer does not allow normal interfaces supported by a pointer, like calling *, ->. Because it is not the owner of the resource and hence it does not give any chance for the programmer to mishandle it. Then how do we make use of a weak pointer?
@@ -1342,12 +1415,13 @@ The answer is to create a shared_ptr out of a weak _ptr and use it. Because this
             weak_ptr<Test> wptr1 = wptr.lock();        // ref count = 1, weak count = 1
         }
 
-###
+<br>
+
 ![alt text](https://www.codeproject.com/KB/cpp/541067/CyclicRef_WP.png "example overview")
 
 
 ###
-# boost::asio
+## boost::asio
 some quick notes bout bost asio, so i hade a basic asio progarm and it took me 100 hours to figure out which files i need to link in order to compile (found stack overflow post - thanks to the answerer) and these are the three files u need to link in order to use boost::asio, can't they put it in their docs, fuckk!
         
         c++ -I /path/to/boost_1_67_0 example.cpp -o example -lpthread -lboost_system -lboost_signals ( -lboost_thread -  if u are using thread.)

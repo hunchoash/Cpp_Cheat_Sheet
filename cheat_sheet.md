@@ -2,18 +2,22 @@
 * [Initialization](#initialization)
 * [Limits](#limits)
 * [Conversion / Casting](#conversion--casting)
+    * [Casting Types](#casting-types)
+        * [Static Cast](#static-cast) 
+        * [Const Cast](#const-cast) 
+        * [Dynamic Cast](#dynamic-cast)
+        * [Reinterpret Cast](#reinterpret-cast)
+    * [Convert strings to other data types and bases](#Convert-string-to-other-data-types)
 * [Errors](#errors)
 * [Operators](#operators)
     * [Token Summery](#token-summery)
     * [Alternative Representation](#alternative-representation)
 * [Shortcut to copy strings](#shortcut-to-copy-strings)
 * [Function Pointer](#function-pointer)
+    * [using `typedefs` and `using` satements](#using-typedefs-and-using-satements-to-make-em-look-prittier)
+    * [Using sd::function](#Using-sd::function-introduced-in-Cxx-11)
+    * [Using auto](#using-auto)
 * [OS  MACROS C/C++](#os--macros-cc)
-* [Casting Types](#casting-types)
-    * [Static Cast](#static-cast) 
-    * [Const Cast](#const-cast) 
-    * [Dynamic Cast](#dynamic-cast)
-    * [Reinterpret Cast](#reinterpret-cast)
 * [Types of function declerations](#types-of-function-declerations)
     * [Rule of thumb for passing values](#rule-of-thumb-for-passing-values)
 * [Specify the size of the array while passed it to a fucntion](#specify-the-size-of-the-array-while-passed-it-to-a-fucntion)
@@ -43,9 +47,13 @@
     * [weak_ptr](#weak_ptr)
 * [boost::asio](#boostasio)
 
-## Introduction
+
+<br>
+
+# Introduction
+
 i made this just so i dont have to google every freakn thing, i could just serach it up here and if it aint here then i can google it. its handy tbh!
-tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
+tho, if any of yall find any dumb stuff/wrong stuff in this hoe please holla at me.
 
 ---------------------------------------------------------------------------
 
@@ -119,6 +127,116 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
     }
 
 **u can convert pointer to const pointer and reference to const reference implicitly**
+
+## Casting Types
+
+### Static Cast
+
+this is a compile time cast and does things like implicit conversion between types (int, float or pointer to void* and it can also call explicit conversion fuctions) (or implicit ones).
+
+    //e.g:
+    float a = 12.99;
+    int b = static_cast<int>(a);
+
+    // w/ *'s
+    int i = 12;
+    void *p = static_cast<void *>(&i); 
+    int *x = static_cast<int *>(p);
+
+
+### Const Cast
+
+const cast is used to cast away the constness of variable, const cast can be used to change non-const class members inside a function, const cast can be used to pass const data to a function that doesn't allow const
+
+    //e.g:
+
+    int f (int* p) {
+        return (*ptr + 10);
+    }
+
+    const int val = 10;
+    const int *p = &val;
+
+    // u cannot modify the calue here
+    int *pf = const_cast<int *>(p);
+
+    std::cout << f(pf);
+
+    // if u wanna modify the value make int val non const:
+    int val = 10;
+
+    // same as above...
+
+
+### Dynamic Cast
+
+dynamic cast works at runtime rather than compile time like static cast, DC can work only in polymorphic types
+
+    strutc A {
+        virtual void f();
+    };
+    struct B : public A {};
+    struuct C {};
+
+
+    A a;
+    B b;
+
+    A *ap = &b;
+    B *b1 = dynamic_cast<B *>(&a);       // NULL, bcus 'a' is not 'b'
+    B *b2 = dynamic_cast<B *>(ap);       // 'b'
+    C *c  = dynamic_cast<C *>(ap);       // NULL
+
+    A& ar = dynamic_cast<A&>(*ap);       // OK.
+    B& br = dynamic_cast<B&>(*ap);       // OK.
+    C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast
+
+
+### Reinterpret Cast
+
+RC is used to convert one pointer of another pointer of any type, no matter wither the class is related to each other or not. it does not check if the pointer type and the data pointed by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
+
+***syntax***
+    datatype *var_name = reinterpret_cast<data_type *>(pointer variable);
+
+
+    int *p = new int(64);
+    char *cp = reinterpret_cast<char *>(p);
+
+    cout << *p << '\n';     // 64;
+    cout << *cp << '\n';    // B;
+    cout <<  p << '\n';     // 0x902bf;
+    cout <<  ch << '\n';    // A;
+
+<br>
+
+## Convert string to other data types
+
+ima just put some basic use cases and shit here.
+
+    auto a = std::stoi("12");    // string -> int
+    auto b = std::stof("12");    // string -> float
+    auto c = std::stod("12");    // string -> double
+    auto d = std::stol("12");    // string -> long
+    auto e = std::stoll("12");   // string -> long long
+    auto f = std::stoul("12");   // string -> unsigned long
+    auto g = std::stoull("12");  // string -> unsigned long long
+    auto h = std::stoll("12");   // string -> long long
+
+<br>
+also it discards any characters in a string.
+
+`example`
+
+    std::string str = "Free Tekashi 69";
+    auto val = std::stoi(str);
+
+    // val: 69
+
+
+theres still a lot of things like bases and position and shit so, just refer to [cppreference](https://en.cppreference.com/w/cpp/string/basic_string/stol) if u want greater details bout it.
+
+<br>
 
 ---------------------------------------------------------------------------
 
@@ -395,7 +513,7 @@ please reffer to [learncpp](https://learncpp.com/cpp-tutorial/78-function-pointe
         }
 <br>
 
-using `typedefs` and `using` satements to make em look prittier.
+### using `typedefs` and `using` statements to make em look cool.
 
 
     typedef bool (*fPtr)(int); 
@@ -404,7 +522,47 @@ using `typedefs` and `using` satements to make em look prittier.
     void f(fPtr fp);
     void f1(fPtr1 fp);
 
+### Using `sd::function` (introduced in Cxx 11)
+std::function is an alternative for storing function pointers in Cxx, which is defined in std lib <functional>
+`syntax`
 
+    std::function<return type(arguement types if any else empty)> 
+
+`example`
+
+    #include <functional>
+
+    int foo(int x) {
+        return x;
+    }
+
+    int main() {
+
+        std::function<int(int)> fPtr = nullptr;
+        fPtr = foo;
+
+        fPtr(12);
+    }
+
+<br>
+
+### Using `auto`
+however using auto is error prone, cus return type and the arguments of the function or not exposed like they do w/ __*typedef*__,  __*using*__, __*std::function*__. tho its cool if u dont give a fug bout it and lazy af.
+
+`example`
+
+    int foo(int x) {
+        return x;
+    }
+
+    int main() {
+
+        auto fPtr = foo;
+
+        foo(12);
+    }
+
+<br>
 ---------------
 
 ## OS MACROS C/C++
@@ -446,88 +604,6 @@ using `typedefs` and `using` satements to make em look prittier.
         #endif
         
     }
-
-----------------------------------
-
-## Casting Types
-
-### Static Cast
-
-this is a compile time cast and does things like implicit conversion between types (int, float or pointer to void* and it can also call explicit conversion fuctions) (or implicit ones).
-
-    //e.g:
-    float a = 12.99;
-    int b = static_cast<int>(a);
-
-    // w/ *'s
-    int i = 12;
-    void *p = static_cast<void *>(&i); 
-    int *x = static_cast<int *>(p);
-
-
-### Const Cast
-
-const cast is used to cast away the constness of variable, const cast can be used to change non-const class members inside a function, const cast can be used to pass const data to a function that doesn't allow const
-
-    //e.g:
-
-    int f (int* p) {
-        return (*ptr + 10);
-    }
-
-    const int val = 10;
-    const int *p = &val;
-
-    // u cannot modify the calue here
-    int *pf = const_cast<int *>(p);
-
-    std::cout << f(pf);
-
-    // if u wanna modify the value make int val non const:
-    int val = 10;
-
-    // same as above...
-
-
-### Dynamic Cast
-
-dynamic cast works at runtime rather than compile time like static cast, DC can work only in polymorphic types
-
-    strutc A {
-        virtual void f();
-    };
-    struct B : public A {};
-    struuct C {};
-
-
-    A a;
-    B b;
-
-    A *ap = &b;
-    B *b1 = dynamic_cast<B *>(&a);       // NULL, bcus 'a' is not 'b'
-    B *b2 = dynamic_cast<B *>(ap);       // 'b'
-    C *c  = dynamic_cast<C *>(ap);       // NULL
-
-    A& ar = dynamic_cast<A&>(*ap);       // OK.
-    B& br = dynamic_cast<B&>(*ap);       // OK.
-    C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast
-
-
-### Reinterpret Cast
-
-RC is used to convert one pointer of another pointer of any type, no matter wither the class is related to each other or not. it does not check if the pointer type and the data pointed by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
-
-***syntax***
-    datatype *var_name = reinterpret_cast<data_type *>(pointer variable);
-
-
-    int *p = new int(64);
-    char *cp = reinterpret_cast<char *>(p);
-
-    cout << *p << '\n';     // 64;
-    cout << *cp << '\n';    // B;
-    cout <<  p << '\n';     // 0x902bf;
-    cout <<  ch << '\n';    // A;
 
 ---------------------
 
@@ -1523,4 +1599,9 @@ some quick notes bout bost asio, so i hade a basic asio progarm and it took me 1
         
         c++ -I /path/to/boost_1_67_0 example.cpp -o example -lpthread -lboost_system -lboost_signals ( -lboost_thread -  if u are using thread.)
 
-asio simple print nums a second programmed borrowed from ( boost.org ) ***please refer to boost.org/doc/boost_asio/tutorial for examples***
+please refer to [boost](boost.org/doc/boost_asio/tutoria) for greaer details
+
+<br>
+
+----------
+

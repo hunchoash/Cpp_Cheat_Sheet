@@ -255,63 +255,159 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 |   xor_eq        |         ^=          |
 |                 |                     |
 
+---------------
 
-## Shortcut to copy strings
+##Shortcut to copy strings
 
     while (∗p++ = ∗q++);
 
+-------------
 
-## Function Pointer
+##Function Pointer
 
-    void doSome(int a) {
-        std::cout << "Do something w/ " << a << '\n';
-    }
+function pointer is a pointer that points to a function instead like how a normal pointer points to a variable or an object. obviously duh!
+please reffer to [learncpp](https://learncpp.com/cpp-tutorial/78-function-pointers/) for greater details. cus i'm lazy af anf i aint type all of it.
 
-    // Initialize
-    void (*doPtr)(int) = &doSome;
-
-    // Invoke
-    (*doPtr)(12);
-
-    // Output
-    Do something w/ 12
-
-    /*
-         Without " & " and " * " 
-    */
-    void (*doPtr)(int) = doSome;
-    doPtr(12);
-
-    // Output
-    Do something w/ 12
-
-    /*
-        Array of functions
-    */
-
-    void doSome(int a) {
-    std::cout << "Do something 0 w/ " << a << '\n';
-    }
-
-    void doSome1(int a)
-    {
-        std::cout << "Do something 1 w/ " << a << '\n';
-    }
-
-    void doSome2(int a)
-    {
-        std::cout << "Do something 2 w/ " << a << '\n';
-    }
-
-    std::cout << "Enter Choice: \n" << "0. doSome\t 1. doSome1\t 2. doSome2" << '\n';
-    ch = getch()    // in huncho.h
+* when a function is called the execution jumps to the address of that function. cus like variables functions live at assigned address in memory.
+`example` 
+<br>
     
-    ch -= '0';  // convert const char to int const
+        int foo() {     // suppose code for foo starts at memory address 0x7981937
+            return 5;   
+        }
 
-    doPtr[ch](12); // invoke function by index
+        main() {
+            foo()   // execuion jumps to 0x7981937
+        }
+        
+* syntax for creaing non-const function pointer, whose return  type is int. and takes no arguement `int (*anyName)()` this f pointer can point to any funcion that matches the type.
+
+* syntax for defining a funcion poiner that takes a const int `int (*const int)()` note that u have  to put const after the abstreck and if u put cons before the int like `const int (*int)()` this would mean that this function returns a const int. again "duh!"
+
+`assigning function pointers`
+
+    int foo() { return 5; }
+    int goo() { return 5; }
+
+    main() {
+        
+        int (*fPtr)() = foo;    // fPtr points to foo()
+        fPtr = goo;             // now fPtr points to goo()
+        
+        // plz dont do this -> fPtr = goo();
+    }
+
+`calling function using funcion pointer`
+
+* using explicit dereference
+
+        int foo(int x) { return x; }
+
+        main() {
+            int (*fPtr)(int) = foo; // assing fPtr to foo()
+            (*fPtr)(12);            // call foo() via fPtr
+        }
+
+* using implicit dereference
+
+        int foo(int x) { return x; }
+
+        main() {
+            int (*fPtr)(int) = foo; // assing fPtr to foo()
+            fPtr(12);               // call foo() via fPtr
+        }
+
+* you cant use default values with funcions pointers cus they are evaluated at run time and normal functions are evaluated at compile time.
+
+        int foo(int x = 2) {
+            return x;
+        }
+
+        int main() {
+
+            int (*fPtr)(int);
+
+            fPtr = foo;     // assing fPtr to foo()
+            fPtr();         // Error. cant use default value.
+
+            foo();          // Ok. can use default value
+
+        }
+
+<br>
+
+* using function pointers as a callback function. so in this example we gon make a program which sors an array of ints. and depending on the callback funcion that the user is gon provide we it gon order it (ascending / descending ).
+
+        #include <algorithm>
+        #include <iostream>
+
+        /*
+           aphcourse we can make cmpFnctn take an default function 
+           for example bool (*cmpFnctn)(int, int) = asc
+           if user do not provide the cmp function then its gon use default.
+        */
+
+        void selecnSort(int *arr, int size, bool (*cmpFnctn)(int, int)) 
+        {
+            for (int i = 0; i < size; ++i) {
+
+                // bIndex if the smallest / largest elem we've encountered so far.
+                int bIndex = i;
+
+                for (int j = i + 1; j < size; ++j) {
+
+                    // check idf he new elem is smaller / larger than the previous elem.
+                    if (cmpFnctn(arr[bIndex], arr[j])) 
+                        // this is new smallest / largest no. for this iteration
+                        bIndex = j;
+                }
+
+                std::swap(arr[i], arr[bIndex]);
+            }
+        }
+
+        // comparison function that sorts in ascending.
+        bool asc(int x, int y) {
+            return x > y;
+        }
 
 
-## OS  MACROS C/C++
+        // comparison function that sorts in descending.
+        bool dsc(int x, int y) {
+            return x < y;
+        }
+
+        int main() {
+
+            int arr[9] = {2, 3, 54, 12,  1, 99, 21, 6, 8};
+
+            selecnSort(arr, 9, asc);
+            std::cout << "Asc: \n";
+            for (auto& x : arr)
+                std::cout << x << '\n';
+
+            selecnSort(arr, 9, dsc);
+            std::cout << "Desc: \n";
+            for (auto& x : arr)
+                std::cout << x << '\n';
+
+            return 0;
+        }
+<br>
+
+using `typedefs` and `using` satements to make em look prittier.
+
+
+`typedef bool (*fPtr)(int); ` 
+    `void f(fPtr fp);`
+
+`using fPtr1 = bool (*)(int);`  
+    `void f(fPtr1 fp);`
+
+
+---------------
+
+##OS  MACROS C/C++
 
     _WIN32          // Windows 32 Bit
     _WIn64          // Windows 64 Bit

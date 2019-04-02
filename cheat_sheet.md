@@ -32,7 +32,7 @@
 * [static member](#static-member)
 * [print UTF-8 characters to the console](#print-utf-8-characters-to-the-console)
 * [Delegating Constructor](#delegating-constructor)
-    * [`= delete` and `= default`](#-delete-and--default)
+* [`= delete` and `= default`](#-delete-and--default)
 * [virtual](#virtual)
 * [**`override`** and **`final`**](#override-and-final)  
     * [override](#override)
@@ -43,13 +43,13 @@
     * [weak_ptr](#weak_ptr)
 * [boost::asio](#boostasio)
 
-##Introduction
+## Introduction
 i made this just so i dont have to google every freakn thing, i could just serach it up here and if it aint here then i can google it. its handy tbh!
 tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-##Initialization
+## Initialization
 
 **don't ever us this**
 
@@ -60,7 +60,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
     std::initializer_list<int> x = {n}
 
 
-####
+<br>
 
 *some initilaization rules:*
     
@@ -86,7 +86,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-##Limits 
+## Limits 
 
 **max Double**
 
@@ -106,7 +106,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-##Conversion / Casting
+## Conversion / Casting
 
 **Pointer, integral and floating-point values can be implicitly converted to bool**
 *a nonzero value converts to true and zero value converts to false*
@@ -122,7 +122,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-##Errors
+## Errors
 
 **throw runtime error**
     
@@ -131,7 +131,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------------------------------------------------------------------
 
-##Operators
+## Operators
 
 
 |               `USE`                    |                 `SYNTAX`                |       `REFERENCE`      |
@@ -210,7 +210,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 |   comma (sequencing)                   |  expr , expr                            |        §10.3.2         |
 |                                        |                                         |                        |
 
-#
+<br>
 
 ### `Token Summery`
 
@@ -226,7 +226,7 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 |   Punctuation                          |  ; , , , { , } , ( , )                  |                        |
 |   Preprocessor notation                |  # , ##                                 |        §12.6           |
 
-#
+<br>
 
 ### `Alternative Representation`
 
@@ -257,13 +257,13 @@ tho, if any of yall find any dumb stuff/wrong stuff in this please let me know.
 
 ---------------
 
-##Shortcut to copy strings
+## Shortcut to copy strings
 
     while (∗p++ = ∗q++);
 
 -------------
 
-##Function Pointer
+## Function Pointer
 
 function pointer is a pointer that points to a function instead like how a normal pointer points to a variable or an object. obviously duh!
 please reffer to [learncpp](https://learncpp.com/cpp-tutorial/78-function-pointers/) for greater details. cus i'm lazy af anf i aint type all of it.
@@ -398,16 +398,16 @@ please reffer to [learncpp](https://learncpp.com/cpp-tutorial/78-function-pointe
 using `typedefs` and `using` satements to make em look prittier.
 
 
-`typedef bool (*fPtr)(int); ` 
-    `void f(fPtr fp);`
-
-`using fPtr1 = bool (*)(int);`  
-    `void f(fPtr1 fp);`
+    typedef bool (*fPtr)(int); 
+    using fPtr1 = bool (*)(int);
+        
+    void f(fPtr fp);
+    void f1(fPtr1 fp);
 
 
 ---------------
 
-##OS  MACROS C/C++
+## OS MACROS C/C++
 
     _WIN32          // Windows 32 Bit
     _WIn64          // Windows 64 Bit
@@ -418,9 +418,7 @@ using `typedefs` and `using` satements to make em look prittier.
     __LINUX__       // Linux
     __FreeBSD__     // Free BSD
 
-------------------------------------
-
-    // e.g:
+`example`
 
     std::string getOs() {
 
@@ -451,7 +449,7 @@ using `typedefs` and `using` satements to make em look prittier.
 
 ----------------------------------
 
-##Casting Types
+## Casting Types
 
 ### Static Cast
 
@@ -553,12 +551,12 @@ RC is used to convert one pointer of another pointer of any type, no matter with
             [[noreturn]] virtual inline auto f(const unsigned long int ∗const) −> void const noexcept;
         };
 
-###You can also define return type of a function like following
+### You can also define return type of a function like following
 
     auto f(void) -> int { } // int is a return type of this function.
 
 
-###Rule of thumb for passing values
+### Rule of thumb for passing values
 
 - Use pass-by-value for small objects.
 - Use pass-by- const -reference to pass large values that you don’t need to modify.
@@ -569,7 +567,7 @@ RC is used to convert one pointer of another pointer of any type, no matter with
 
 ----------------------
 
-##Specify the size of the array while passed it to a fucntion
+## Specify the size of the array while passed it to a fucntion
 
     void f(int(&arr)[4]); // size = 4
 
@@ -601,7 +599,7 @@ RC is used to convert one pointer of another pointer of any type, no matter with
 
 -----------------
 
-##Ellipsis
+## Ellipsis
 
 **syntax:**
     
@@ -737,7 +735,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
     1.43333
 
 
-##Some predifined Macros
+## Some predifined Macros
 
 - `__cplusplus` defined in a C++ cpmpilation (not in C), its value is 201103L
 - `__DATE__` date in ***yyyy:mm:dd*** format
@@ -753,7 +751,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 
 ---------------------
 
-##Memory measurement chart
+## Memory measurement chart
 
 | `Data Measurement` |       `Size`          |
 |--------------------|-----------------------|
@@ -768,7 +766,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 
 ------------------
 
-##Stop Execution of the program for some time
+## Stop Execution of the program for some time
 
     #include <iostream>
     #include <chrono>
@@ -786,7 +784,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
     }
  
 ----------------
-##Color and text Prefferences
+## Color and text Prefferences
 
 **`Unix Specific`**
 
@@ -821,7 +819,9 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 
 <br>
 
-##Get size of console window
+----------------
+
+## Get size of console window
 
 **`Windows`**
 
@@ -854,7 +854,7 @@ but this is the shittiest thing you could do u cus type checking aint a thing in
 
 ------------------
 
-##Assertions
+## Assertions
 Assertions are statements used to test assumptions made by programmer, for example we may use assertion to check wether pointer returned by malloc is NULL or not. If the expression evaluates to 0 (false) then expression, sourcode filename, line number are sent thru the stderr and then abort function is called
 
 `Syntax`
@@ -951,7 +951,7 @@ this*  unconditionally checks its condition at comoile time, if the assertion fa
 
 ---------------
 
-##Convert boolean expressions into strings
+## Convert boolean expressions into strings
 
 by default 1 : true and 0 : false so, if wanna get it in a string litteral we can use std::boolalpha
 
@@ -961,7 +961,7 @@ by default 1 : true and 0 : false so, if wanna get it in a string litteral we ca
 
 ------------------
 
-##Invoke Functions After Returnting from the main() 
+## Invoke Functions After Returnting from the main() 
 
 **`atexit(void*());`**
 
@@ -981,12 +981,13 @@ by default 1 : true and 0 : false so, if wanna get it in a string litteral we ca
     }
 
 
-####
+<br>
+
     //  output
     Returning From main()
     Program Terminated
 
-####
+<br>
 
 **`at_quick_exit(void(*));`**
 
@@ -1012,7 +1013,7 @@ by default 1 : true and 0 : false so, if wanna get it in a string litteral we ca
 
 ------
 
-##explicit 
+## explicit 
 
 explicit initialization is also known as direct initialization, A constructor declared with the keyword explicit can only be used for initialization and explicit conversions.
 
@@ -1034,7 +1035,7 @@ explicit initialization is also known as direct initialization, A constructor de
 
 -----------
 
-##const member functions
+## const member functions
 
 The const after the (empty) argument list in the function declarations indicates that these functions do not modify the state of a Class .
 in simle words if we got a private memeber for ex. x in const function we cannot modify it for ex. do ++x or x += 1, one thing to remeber bout const functions is that they are read only objects.
@@ -1083,7 +1084,7 @@ in simle words if we got a private memeber for ex. x in const function we cannot
 
 -----------
 
-##mutable
+## mutable
 
 mutable is a storage class specifier just like for ex: static, register, extern and auto. Sometimes there is requirement to modify one or more data members of class / struct through const function even though you don’t want the function to update other members of class / struct. This task can be easily performed by using mutable keyword.
 
@@ -1113,12 +1114,12 @@ mutable is a storage class specifier just like for ex: static, register, extern 
 
 -----------
 
-##static member
+## static member
 
 A variable that is part of a class, yet is not part of an object of that class, is called a static member. There is exactly one copy of a static member instead of one copy per object, as for ordinary non- static members Similarly, a function that needs access to members of a
 class, yet doesn’t need to be invoked for a particular object, is called a static member function.
 
-    // e.g:
+`example`
 
     #include <iostream>
 
@@ -1175,7 +1176,7 @@ class, yet doesn’t need to be invoked for a particular object, is called a sta
 
 ---------
 
-##print UTF-8 characters to the console
+## print UTF-8 characters to the console
 
     std::locale old_locale;  // current locale
     setlocale(LC_ALL, "en_US.UTF-8");
@@ -1187,7 +1188,7 @@ class, yet doesn’t need to be invoked for a particular object, is called a sta
 
 ------------
 
-##Delegating Constructor
+## Delegating Constructor
 
 a member-style initializer using the class’s own name (its constructor name) calls another constructor as part of the construction. Such a constructor is called a delegating constructor (and occasionally a forwarding constructor).
 
@@ -1204,13 +1205,13 @@ a member-style initializer using the class’s own name (its constructor name) c
 
 -------
 
-### `= delete` and `= default`
+## `= delete` and `= default`
 
 *default* states that we are allowing the default copy, move or destaructor ( which compiler provides us by defualt ). __If a class has a pointer member, it probably needs a destructor and non-default copy operations__
 
-#### Rules: *5 Statements Statements*
+### __Rules__: 5 Statements Statements
 
-    // lets take an example:
+`example`
 
     class Foo {
     public:
@@ -1328,11 +1329,11 @@ IMP note bout virtual functions is that if u have at least 1 virtual function u 
 
 --------
 
-##**`override`** and **`final`**
+## `override` and `final`
 
 override and final are whats called a contextual keyword. which means for example if u declare an object or a variable or anything with name **override** or **final** they dont mean nothin compiler is gonna treat em as just name, so to make use of em (what they meant to be used for) u need to declare em at the end of the fucntion that u wanna override. like literally at the end of the function declaration for ex. `void foo() override final {}`.
 
-###override:
+### override:
 so override is a keyword which specifies that the function is gon get overriden. like normally people dont say override when they are overriding a virtual fucntion from the base class. but it looks cool and helps maintian the code.
 
 `example`
@@ -1350,7 +1351,7 @@ so override is a keyword which specifies that the function is gon get overriden.
             override = 12;  // again this override doesnt mean nothin its just name of an int we declared in out base class above.
     };
 
-###final
+### final
 so, in my opinion final is pretty cool cus it doesnt let u override an object again cus its litteraly final. u feel me? so the idea here is if u got a virtual function in yo base class and u wanna override it but dont want any other classes to fuck w/ it again u use override (exmaple below might explain it better ig.) and if u try to override it BOOM its an erro.
 
     class B {
@@ -1387,11 +1388,11 @@ so, in my opinion final is pretty cool cus it doesnt let u override an object ag
 
 ----------
 
-##Smart Pointers
+## Smart Pointers
 
 smart pointers are used to make sure the object is deleted if it is no longer used (refrenced)(e.g: when object goes out of scope) there are basically 2 types of STL smart pointers available for us.
 
-###unique_ptr 
+### unique_ptr 
 this template holds a pointer to an object and deleted this object when *unique_ptr<>* is deleted. so your lazy ass dont need to explicitly say *delete*, the *unique_ptr* destructor is always called so the element that u stored on the free stored is always deleted s **No Memory Leaks**.
 
 As the name implies make sure only exactly one copy of an object exists. *unique_ptr<>* does not support copying if u try to copy u gon get compile time errors but it supports move semantcis obviously **Note: if a unique pointer already holds pointer to an existing object then that object gets deleted and new pointer is stored e.g: `unique_ptr<int> ptr; ptr.reset( new int{13} );`
@@ -1418,7 +1419,7 @@ The interface that unique_ptr provides is very similar to the ordinary pointer b
 
     }
 
-###shared_ptr 
+### shared_ptr 
 
 The shared pointer is a reference counting smart pointer that can be used to store and pass the reference beyond the scope of a function,this is pirtucularly useful int he context of the OOP. to store a pointer as a member variable and return it to access the value outside the scope of the class.
 
@@ -1489,7 +1490,7 @@ u can also use std::make_shared<T>() to assign the values and ptr.use_count() to
 by default shared_ptr called delete even if u have an array allocated, so to overcome this problem we can use a lambda.
 `std::shared_ptr<int> arr (new int[3], [](int* p) { delete[] p; } );`
 
-###weak_ptr
+### weak_ptr
 A weak pointer provides sharing semantics and not owning semantics. This means a weak pointer can share a resource held by a shared_ptr. So to create a weak pointer, some body should already own the resource which is nothing but a shared pointer.
 
 A weak pointer does not allow normal interfaces supported by a pointer, like calling *, ->. Because it is not the owner of the resource and hence it does not give any chance for the programmer to mishandle it. Then how do we make use of a weak pointer?
@@ -1515,135 +1516,11 @@ The answer is to create a shared_ptr out of a weak _ptr and use it. Because this
 
 ![alt text](https://www.codeproject.com/KB/cpp/541067/CyclicRef_WP.png "example overview")
 
+--------------------
 
-###
 ## boost::asio
 some quick notes bout bost asio, so i hade a basic asio progarm and it took me 100 hours to figure out which files i need to link in order to compile (found stack overflow post - thanks to the answerer) and these are the three files u need to link in order to use boost::asio, can't they put it in their docs, fuckk!
         
         c++ -I /path/to/boost_1_67_0 example.cpp -o example -lpthread -lboost_system -lboost_signals ( -lboost_thread -  if u are using thread.)
 
-####
-asio simple print nums a second programmed borrowed from ( boost.org ) ***please refer to boost.org/doc/boost_asio/tutorial for explaination***
-
-
-    #include <iostream>
-    #include <boost/asio.hpp>
-    #include <boost/bind.hpp>
-    #include <boost/date_time/posix_time/posix_time.hpp>
-
-    class Printer {
-        public: 
-            Printer(boost::asio::io_context& io) : timer_(io, boost::posix_time::seconds(1)), count_(0) 
-            {   
-                /* 
-                   since every non-static member function has implicit `this` we need to bind `this` parameter 
-                   boost::bind() converts a callback handler ( in this case memeber fucntion ) into a function
-                   member that can be invoked as tho it has the signature void(const bost::system::error_code&)
-
-                */
-                timer_.async_wait(boost::bind(&Printer::print, this));
-            }
-
-            ~Printer() {
-                std::cout << "Final Count: " << count_ << '\n';
-            }
-
-            void print() {
-                if (count_ < 5) {
-                    std::cout << count_ << '\n';
-                    ++count_;
-
-                    timer_.expires_at(timer_.expires_at() + boost::posix_time::seconds(1));
-                    timer_.async_wait(boost::bind(&Printer::print, this));
-                }
-            }
-
-            private:
-                boost::asio::deadline_timer timer_;
-                int count_;
-
-    };
-
-    int main() {
-
-        //all programs that use asio have to have at least one `context` object
-        boost::asio::io_context io;
-        Printer p(io);
-
-        io.run();
-
-        
-        return 0;
-    }
-
-
-####
-
-simple asio program to demonstrate async handling w/ strand in multithreaded programs
-
-    #include <iostream>
-    #include <boost/asio.hpp>
-    #include <boost/bind.hpp>
-    #include <boost/thread/thread.hpp>
-    #include <boost/date_time/posix_time/posix_time.hpp>
-
-    class Printer {
-        public:
-            Printer(boost::asio::io_context& io) :
-                _strand(io), _timer1(io, boost::posix_time::seconds(1)),
-                _count(0),   _timer2(io, boost::posix_time::seconds(1))
-            {
-                _timer1.async_wait(boost::asio::bind_executor(_strand, boost::bind(&Printer::print1, this)));
-                _timer2.async_wait(boost::asio::bind_executor(_strand, boost::bind(&Printer::print2, this)));
-            }
-
-            void print1() {
-                if (_count < 10) {
-                    std::cout << "Timer 1: " << _count << '\n';
-                    ++_count;
-
-                    _timer1.expires_at(_timer1.expires_at() + boost::posix_time::seconds(1));
-                    _timer1.async_wait(boost::asio::bind_executor(_strand, boost::bind(&Printer::print1, this)));
-                    
-                } else {
-                    this->~Printer();
-                }
-            } 
-
-            void print2() {
-                if (_count < 10) {
-                    std::cout << "Timer 2: " << _count << '\n';
-                    ++_count;
-
-                    _timer2.expires_at(_timer2.expires_at() + boost::posix_time::seconds(1));
-                    _timer2.async_wait(boost::asio::bind_executor(_strand, boost::bind(&Printer::print2, this)));
-                    
-                } else {
-                    exit(1);
-                }
-            } 
-
-            ~Printer() {
-                std::cout << "Final Count: " << _count << '\n';
-            }
-
-            private:
-                boost::asio::io_context::strand _strand;
-                boost::asio::deadline_timer _timer1;
-                boost::asio::deadline_timer _timer2;
-                int _count;
-    };
-
-    int main() {
-
-        //all programs that use asio have to have at least one `context` object
-        boost::asio::io_context io;
-        Printer p(io);
-
-        boost::thread t(boost::bind(&boost::asio::io_context::run, &io));
-
-        io.run();
-        t.join();
-
-        return 0;
-    }
+asio simple print nums a second programmed borrowed from ( boost.org ) ***please refer to boost.org/doc/boost_asio/tutorial for examples***

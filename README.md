@@ -1,4 +1,5 @@
 # Cpp_Cheat_Sheet
-i dont know if anybody will  ever read this, i made this for myself tho if anybody finds any dumb shit in this plzz halla at me
 
-**hey theres a file called cheet_sheet.md and evrything is in their so, dont waste your time here!**
+first of all i'm not an expert, and this is just for reference so i dont have to google evrything tho if anyone finds any stupid shit please holla at me. 
+
+**And hey theres a file called cheet_sheet.md, evrything is in their so dont waste your time here!**

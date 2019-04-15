@@ -46,6 +46,14 @@
     * [shared_ptr](#shared_ptr)
     * [weak_ptr](#weak_ptr)
 * [boost::asio](#boostasio)
+* [Pointer to members](#Pointer-to-members)
+* [Inheritance](#Inheritance)
+    * [Access Control](#Access-Control)
+    * [Modes of inheritance](#Modes-of-inheritance)
+* [Traverse a directory](#Search-for-files-in-a-specific-directory)
+    * [Non Recursively](#non-recursively)
+    * [Recursively](#recursively)
+
 
 
 <br>
@@ -1604,4 +1612,182 @@ please refer to [boost](boost.org/doc/boost_asio/tutoria) for greaer details
 <br>
 
 ----------
+
+## Pointer to members
+
+pointers-to-member operators, ``.*`` and ``->*`` __return the value of a specifc calss member.__ for the objec specified on the left side of the expression. the right side must specify a member of the calss.
+
+`example`
+
+```
+#include <iostream>
+
+class F {
+public:
+    void foo() { 
+        sd::cout << "foo\n";
+    }
+
+    int num;
+};
+
+void (F::*p2mf)() = &F::foo;    // pm2f is a pointer to member foo()
+int F::*p2mv = &F::num;         // p22mv is a pointer to member num
+
+main() {
+
+    F f;            // create object of type F 
+    F* fp = new F;  // pointer to object of type F
+
+    (f.*p2mf)()     // Invoke foo() from f
+    (fp->*p2mf)()   // Invoke foo() from fp
+
+    f.*p2mv = 13;   // f's  num -> 13
+    f->*p2mv = 16;  // fp's num -> 16
+
+    std::cout << "f's num: " << f.*p2mv
+              << "fp's num: " << fp->*p2mv
+              << '\n';
+}
+
+```
+
+<blockquote>just follow the same rule of <b>-></b> (for pointers) and <b>.</b> (for non pointers) but dont forget the <b>*</b> </blockquote>
+
+<br>
+
+pointer to member is not like a "normal pointer" its different it doesnt point to an address. like normal variable and function pointers do. instead it is more like an offset into a structure or an index into an array. 
+
+<blockquote> A static member isn’t associated with a particular object, so a pointer to an ordinary pointer. For example: </blockquote>
+
+
+------------
+
+## Inheritance
+
+### Access Control
+
+* If it is __private__ , its name can be used only by member functions and friends of the class in which it is declared.
+* If it is __protected__ , its name can be used only by member functions and friends of the class in which it is declared and by member functions and friends of classes derived from this class
+* If it is __public__ , its name can be used by any function.
+
+
+### Modes of inheritance
+
+* `public mode`: if we derive a public class from a base class then the __public__ members of the base class will become __public__ in derived class and __protected__ will become __protected__.
+
+* `protected mode`: if we derive sub class from a __proteced__ base class then both __public__ member and __proected__ members of the base class will become __protected__ in derived class.
+
+* `private mode`: if we derive sub class from a __private__ base class then both __public__ member and __protected__ members of the base class will become __private__ in base class. 
+
+```
+class B {
+    
+    protected:
+        int y;
+
+    public:
+        int z;
+
+    private:
+        int x;
+    
+};
+
+class D1 : public B {
+    // z is public
+    // y is protected
+    // x is inaccessible
+};
+
+class D2 : protected B {
+    // z is protected
+    // y is protected
+    // x is inaccessible
+};
+
+class D3 : protected B {
+    // z is private
+    // y is private
+    // x is inaccessible
+};
+```
+
+<blockquote> use proteced only when u will die if u dont use it. and dont declare members protected. </blockquote>
+
+
+
+----------------------------
+
+## Search for files in a specific directory 
+
+### Non Recursively  
+ don't trip on it non-recursively just means it returns the files from the folder that u want. for example i got a file structure like his
+- Folder
+    - file1
+    - folder
+        - file1
+        - file2
+    - file2
+
+so now its gonna return file1 and file2 and "folder" u feel me!
+
+`example:`
+
+```
+#include <iostream>
+// if your compiler has support just include <filesystem>
+#include<experimental/filesystem>
+#include <string>
+
+namespace fs = std::experimental::filesystem;
+
+
+int main() {
+
+    std::string path = "/path";
+
+    for (const auto& entry : fs::directory_iterator(path))
+        rt << entry.path() << '\n';
+    
+    return 0;
+}
+
+```
+
+### Recursively  
+ man this shit is lit. recursive iterator returns filesnames/foldernames from folder we specified and also from the subfolders for example lets assume we got this dir heirarchy
+
+- Folder
+    - file1
+    - folder
+        - file1
+        - file2
+    - file2
+
+so now its gonna return file1, file2, folder, folder/file1, folder/file2 u feel me!
+
+
+```
+#include <iostream>
+// if your compiler has support just include <filesystem>
+#include <experimental/filesystem>
+#include <string>
+
+namespace fs = std::experimental::filesystem;
+
+
+int main() {
+
+    std::string path = "/path";
+
+    for (const auto& entry : fs::recursive_directory_iterator(path))
+        rt << entry.path() << '\n';
+    
+    return 0;
+}
+
+```
+
+<blockquote>TIP: dont forget to link fs by <b>-lstdc++fs</b> if you are using gcc or clang.</blockquote>
 

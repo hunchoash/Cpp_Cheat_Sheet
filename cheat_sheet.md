@@ -50,6 +50,8 @@
 * [Inheritance](#Inheritance)
     * [Access Control](#Access-Control)
     * [Modes of inheritance](#Modes-of-inheritance)
+    * [Runtime Type Information](#Runtime-Type-Information-RTTI)
+    * [Type Id](#typeid)
 * [Traverse a directory](#Search-for-files-in-a-specific-directory)
     * [Non Recursively](#non-recursively)
     * [Recursively](#recursively)
@@ -200,6 +202,62 @@ dynamic cast works at runtime rather than compile time like static cast, DC can 
     C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast
 
 
+
+A dynamic_cast requires a pointer or a reference to a polymorphic type in order to do a downcast or a crosscast.
+
+`example`
+
+```
+class My_slider: public Ival_slider { // polymor phic base (Ival_slider has virtual functions)
+    // ...
+};
+    
+class My_date : public Date { // base not polymorphic (Date has no virtual functions)
+    // ...
+};
+
+void g(Ival_box∗ pb, Date∗ pd) {
+    My_slider∗ pd1 = dynamic_cast<My_slider∗>(pb); // OK
+    My_date∗ pd2 = dynamic_cast<My_date∗>(pd); // error : Date not polymorphic
+}
+```
+Requiring the pointer’s type to be polymorphic simplifies the implementation of dynamic_cast because it makes it easy to find a place to hold the necessary information about the object’s type. A typical implementation will attach a ‘‘type information object’’ to an object by placing a pointer to the type information in the virtual function table for the object’s class.
+
+`example`
+
+```
+My_Slider
+     _______
+    |       |<----
+    |  ...  |     \  Vtable          Type Info                  
+    |  Vptr |      \ ______          _______________    
+    |  ...  |_____\ |      |______\ |               |              Type Info
+    |_______|     / |      |      / |  "My SLider"  | _____________           
+                    |      |        |    bases      |             \/ _______________
+                    |      |        |_______________|            |  "laval_slider"  |
+                    |      |_________                            |__________________|
+                    |______|        \/
+                                     ________________________
+                                    | My_Slider::get_value() |
+                                    |________________________|
+
+```
+
+A dynamic_cast to __void∗__ can be used to determine the address of the beginning of an object of polymorphic type.
+
+`exmaple`
+
+```
+void g(Ival_box∗ pb, Date∗ pd)
+{
+    void∗ pb2 = dynamic_cast<void∗>(pb); // OK
+    void∗ pd2 = dynamic_cast<void∗>(pd); // error : Date not polymorphic
+}
+
+```
+
+<blockquote> Note:<b> There is no dynamic_cast from void∗</b> because there would be no way of knowing where to find the vptr </blockquote>
+
 ### Reinterpret Cast
 
 RC is used to convert one pointer of another pointer of any type, no matter wither the class is related to each other or not. it does not check if the pointer type and the data pointed by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
@@ -260,97 +318,96 @@ theres still a lot of things like bases and position and shit so, just refer to 
 ## Operators
 
 
-|               `USE`                    |                 `SYNTAX`                |       `REFERENCE`      |
-|----------------------------------------|:----------------------------------------|-----------------------:|                     
-|   Subscripting                         |  pointer −> member                      |        §16.2.3         |
-|   Member selection                     |  pointer [ expr ]                       |        §7.3            |
-|   Function call                        |  expr ( expr-list )                     |        §12.2           |
-|   Value construction                   |  type { expr-list }                     |        §11.3.2         |
-|   Function-style type conversion       |  type ( expr-list )                     |        §11.5.4         |
-|   Post increment                       |  lvalue ++                              |        §11.1.4         |
-|   Post decrement                       |  lvalue −−                              |        §11.1.4         |
-|   Type identification                  |  typeid ( type )                        |        §22.5           |
-|   Run-time type identification         |  typeid ( expr )                        |        §22.5           |
-|   Run-time checked conversion          |  dynamic_cast < type > ( expr )         |        §22.2.1         |
-|   Member selection                     |  object . member                        |        §16.2.3         | 
-|   Compile-time checked conversion      |  static_cast < type > ( expr )          |        §11.5.2         |
-|   Unchecked conversion                 |  reinterpret_cast < type > ( expr )     |        §11.5.2         |
-|   const conversion                     |  const_cast < type > ( expr )           |        §11.5.2         |
-|   Size of object                       |  sizeof expr                            |        §6.2.8          |
-|   Size of type                         |  sizeof ( type )                        |        §6.2.8          |
-|   Size of parameter pack               |  sizeof... name                         |        §28.6.2         |
-|   Alignment of type                    |  alignof ( type )                       |        §6.2.9          |
-|   Pre increment                        |  ++ lvalue                              |        §11.1.4         |
-|   Pre decrement                        |  −− lvalue                              |        §11.1.4         |
-|   Complement                           |   ̃ expr                                 |        §11.1.2         |
-|   Not                                  |  ! expr                                 |        §11.1.1         |
-|   Unary minus                          |  − expr                                 |        §2.2.2          |
-|   Unary plus                           |  + expr                                 |        §2.2.2          |
-|   Address of                           |  & lvalue                               |        §7.2            |
-|   Dereference                          |  ∗ expr                                 |        §7.2            |
-|   Create (allocate)                    |  new type                               |        §11.2           |
-|   Create (allocate and initialize)     |  new type ( expr-list )                 |        §11.2           |
-|   Create (allocate and initialize)     |  new type { expr-list }                 |        §11.2           |
-|   Create (place)                       |  new ( expr-list ) type                 |        §11.2.4         |
-|   Create (place and initialize)        |  new ( expr-list ) type ( expr-list )   |        §11.2.4         |
-|   Create (place and initialize)        |  new ( expr-list ) type { expr-list }   |        §11.2.4         |
-|   Destroy (deallocate)                 |  delete pointer                         |        §11.2           |
-|   Destroy array                        |  delete [] pointer                      |        §11.2.2         |
-|   Can expression throw?                |  noexcept ( expr )                      |        §13.5.1.2       |
-|   Cast (type conversion)               |  ( type ) expr                          |        §11.5.3         |
-|   Member selection                     |  object .∗ pointer-to-member            |        §20.6           |
-|   Member selection                     |  pointer −>∗ pointer-to-member          |        §20.6           |
-|                                        |                                         |                        |
-|   Multiply                             |  expr ∗ expr                            |        §10.2.1         |
-|   Divide                               |  expr / expr                            |        §10.2.1         |
-|   Modulo (remainder)                   |  expr % expr                            |        §10.2.1         |
-|   Add (plus)                           |  expr + expr                            |        §10.2.1         |
-|   Subtract (minus)                     |  expr − expr                            |        §10.2.1         |
-|   Shift left                           |  expr << expr                           |        §11.1.2         |
-|   Shift right                          |  expr >> expr                           |        §11.1.2         |
-|   Less than                            |  expr < expr                            |        §2.2.2          |
-|   Less than or equal                   |  expr <= expr                           |        §2.2.2          |
-|   Greater than                         |  expr > expr                            |        §2.2.2          |
-|   Greater than or equal                |  expr >= expr                           |        §2.2.2          |
-|   Equal                                |  expr == expr                           |        §2.2.2          |
-|   Not equal                            |  expr != expr                           |        §2.2.2          |
-|   Bitwise and                          |  expr & expr                            |        §11.1.2         |
-|   Bitwise exclusive-or                 |  expr ˆ expr                            |        §11.1.2         |
-|   Bitwise inclusive-or                 |  expr | expr                            |        §11.1.2         |
-|   Logical and                          |  expr && expr                           |        §11.1.1         |
-|   Logical inclusive or                 |  expr || expr                           |        §11.1.1         |
-|   Conditional expression               |  expr ? expr : expr                     |        §11.1.3         |
-|   List                                 |  { expr-list }                          |        §11.3           |
-|   Throw exception                      |  throw expr                             |        §13.5           |
-|   Simple assignment                    |  lvalue = expr                          |        §10.2.1         |
-|   Multiply and assign                  |  lvalue ∗= expr                         |        §10.2.1         |
-|   Divide and assign                    |  lvalue /= expr                         |        §10.2.1         |
-|   Modulo and assign                    |  lvalue %= expr                         |        §10.2.1         |
-|   Add and assign                       |  lvalue += expr                         |        §10.2.1         |
-|   Subtract and assign                  |  lvalue −= expr                         |        §10.2.1         |
-|   Shift left and assign                |  lvalue <<= expr                        |        §10.2.1         |
-|   Shift right and assign               |  lvalue >>= expr                        |        §10.2.1         |
-|   Bitwise and and assign               |  lvalue &= expr                         |        §10.2.1         |
-|   Bitwise inclusive-or and assign      |  lvalue |= expr                         |        §10.2.1         |
-|   Bitwise exclusive-or and assign      |  lvalue ˆ= expr                         |        §10.2.1         |
-|   comma (sequencing)                   |  expr , expr                            |        §10.3.2         |
-|                                        |                                         |                        |
+|               `USE`                    |                 `SYNTAX`                |
+|----------------------------------------|:----------------------------------------|                     
+|   Subscripting                         |  pointer −> member                      |
+|   Member selection                     |  pointer [ expr ]                       |
+|   Function call                        |  expr ( expr-list )                     |
+|   Value construction                   |  type { expr-list }                     | 
+|   Function-style type conversion       |  type ( expr-list )                     | 
+|   Post increment                       |  lvalue ++                              | 
+|   Post decrement                       |  lvalue −−                              | 
+|   Type identification                  |  typeid ( type )                        | 
+|   Run-time type identification         |  typeid ( expr )                        | 
+|   Run-time checked conversion          |  dynamic_cast < type > ( expr )         | 
+|   Member selection                     |  object . member                        |  
+|   Compile-time checked conversion      |  static_cast < type > ( expr )          | 
+|   Unchecked conversion                 |  reinterpret_cast < type > ( expr )     | 
+|   const conversion                     |  const_cast < type > ( expr )           | 
+|   Size of object                       |  sizeof expr                            | 
+|   Size of type                         |  sizeof ( type )                        | 
+|   Size of parameter pack               |  sizeof... name                         | 
+|   Alignment of type                    |  alignof ( type )                       | 
+|   Pre increment                        |  ++ lvalue                              | 
+|   Pre decrement                        |  −− lvalue                              | 
+|   Complement                           |   ̃ expr                                 |
+|   Not                                  |  ! expr                                 | 
+|   Unary minus                          |  − expr                                 | 
+|   Unary plus                           |  + expr                                 | 
+|   Address of                           |  & lvalue                               | 
+|   Dereference                          |  ∗ expr                                 | 
+|   Create (allocate)                    |  new type                               | 
+|   Create (allocate and initialize)     |  new type ( expr-list )                 | 
+|   Create (allocate and initialize)     |  new type { expr-list }                 | 
+|   Create (place)                       |  new ( expr-list ) type                 | 
+|   Create (place and initialize)        |  new ( expr-list ) type ( expr-list )   | 
+|   Create (place and initialize)        |  new ( expr-list ) type { expr-list }   | 
+|   Destroy (deallocate)                 |  delete pointer                         | 
+|   Destroy array                        |  delete [] pointer                      | 
+|   Can expression throw?                |  noexcept ( expr )                      | 
+|   Cast (type conversion)               |  ( type ) expr                          | 
+|   Member selection                     |  object .∗ pointer-to-member            | 
+|   Member selection                     |  pointer −>∗ pointer-to-member          | 
+|   Multiply                             |  expr ∗ expr                            | 
+|   Divide                               |  expr / expr                            | 
+|   Modulo (remainder)                   |  expr % expr                            | 
+|   Add (plus)                           |  expr + expr                            | 
+|   Subtract (minus)                     |  expr − expr                            | 
+|   Shift left                           |  expr << expr                           | 
+|   Shift right                          |  expr >> expr                           | 
+|   Less than                            |  expr < expr                            | 
+|   Less than or equal                   |  expr <= expr                           | 
+|   Greater than                         |  expr > expr                            | 
+|   Greater than or equal                |  expr >= expr                           | 
+|   Equal                                |  expr == expr                           | 
+|   Not equal                            |  expr != expr                           | 
+|   Bitwise and                          |  expr & expr                            | 
+|   Bitwise exclusive-or                 |  expr ˆ expr                            | 
+|   Bitwise inclusive-or                 |  expr \| expr                           | 
+|   Logical and                          |  expr && expr                           | 
+|   Logical inclusive or                 |  expr \|\| expr                           | 
+|   Conditional expression               |  expr ? expr : expr                     | 
+|   List                                 |  { expr-list }                          | 
+|   Throw exception                      |  throw expr                             | 
+|   Simple assignment                    |  lvalue = expr                          | 
+|   Multiply and assign                  |  lvalue ∗= expr                         | 
+|   Divide and assign                    |  lvalue /= expr                         | 
+|   Modulo and assign                    |  lvalue %= expr                         | 
+|   Add and assign                       |  lvalue += expr                         | 
+|   Subtract and assign                  |  lvalue −= expr                         | 
+|   Shift left and assign                |  lvalue <<= expr                        | 
+|   Shift right and assign               |  lvalue >>= expr                        | 
+|   Bitwise and and assign               |  lvalue &= expr                         | 
+|   Bitwise inclusive-or and assign      |  lvalue \|= expr                         | 
+|   Bitwise exclusive-or and assign      |  lvalue ˆ= expr                         | 
+|   comma (sequencing)                   |  expr , expr                            | 
+|                                        |                                         | 
 
 <br>
 
 ### `Token Summery`
 
-|               `Token Class`            |                 `Example`               |       `REFERENCE`      |
-|----------------------------------------|:----------------------------------------|-----------------------:|
-|   Character literal                    |  vector , foo_bar , x3                  |        §6.3.3          |
-|   Integer literal                      |  int , for , virtual                    |        §6.3.3.1        |
-|   Identifier                           |  ’x’ , \n’ , ’U’\UFADEFADE’             |        §6.2.3.2        |
-|   Floating-point literal               |  12 , 012 , 0x12                        |        §6.2.4.1        |
-|   Keyword                              |  1.2 , 1.2e−3 , 1.2L                    |        §6.2.5.1        |
-|   String literal                       |  "Hello!" , R"("World"!)"               |        §7.3.2          |
-|   Operator                             |  += , % , <<                            |        §10.3           |
-|   Punctuation                          |  ; , , , { , } , ( , )                  |                        |
-|   Preprocessor notation                |  # , ##                                 |        §12.6           |
+|               `Token Class`            |                 `Example`               |
+|----------------------------------------|:----------------------------------------|
+|   Character literal                    |  vector , foo_bar , x3                  |
+|   Integer literal                      |  int , for , virtual                    |
+|   Identifier                           |  ’x’ , \n’ , ’U’\UFADEFADE’             |
+|   Floating-point literal               |  12 , 012 , 0x12                        |
+|   Keyword                              |  1.2 , 1.2e−3 , 1.2L                    |
+|   String literal                       |  "Hello!" , R"("World"!)"               |
+|   Operator                             |  += , % , <<                            |
+|   Punctuation                          |  ; , , , { , } , ( , )                  |
+|   Preprocessor notation                |  # , ##                                 |
 
 <br>
 
@@ -1652,6 +1709,44 @@ main() {
 
 ```
 
+`example w/ using`
+
+```
+class B {
+public:
+    virtual void foo() {
+        std::cout << "From Base\n";
+    }
+};
+
+class D : public B {
+public:
+    void foo() override {
+        std::cout << "From D\n";
+    }
+};
+
+using bptr = void(B::*)();
+
+int main() {
+
+    /*
+        B* b = new B;
+
+        bptr bp = &B::foo;
+        (b->*bp)(); // invoke B's foo()
+
+    */
+
+    B* b = new D;
+
+    bptr bp = &B::foo;
+    (b->*bp)(); // invoke D's foo()
+
+	delete b;
+}
+```
+
 <blockquote>just follow the same rule of <b>-></b> (for pointers) and <b>.</b> (for non pointers) but dont forget the <b>*</b> </blockquote>
 
 <br>
@@ -1671,6 +1766,7 @@ pointer to member is not like a "normal pointer" its different it doesnt point t
 * If it is __protected__ , its name can be used only by member functions and friends of the class in which it is declared and by member functions and friends of classes derived from this class
 * If it is __public__ , its name can be used by any function.
 
+<br>
 
 ### Modes of inheritance
 
@@ -1715,7 +1811,318 @@ class D3 : protected B {
 
 <blockquote> use proteced only when u will die if u dont use it. and dont declare members protected. </blockquote>
 
+<br>
+<br>
 
+### Virtual base classes
+virtual base classes are used in virtual inheritance as a way of preventing multiple __instances__ of a given class in an inheritance hierarchy when using multiple inheritances. 
+
+__few details about em__:
+- virtual base classes are always created before non-virtual base classes, which insures that all bases get created before their derived classes
+- if a class inherits one or more classes that have virtual parents, the _most_ derived class is responsible for constructing the virtual base class.
+
+`example w/t virual base`
+
+```
+class A { };
+
+class B : public A { };
+
+class C : public A { };
+
+class D : public B, public C { };
+
+// our class hierarchy is:
+
+     _________                               _________
+    | class A |                             | class A |
+    |_________|                             |_________|
+
+         ^                                       ^
+         |                                       |
+         |                                       |   
+         |                                       |
+         |                                       |
+     _________                               _________
+    | class B |                             | class C |
+    |_________|                             |_________|
+        ^                                       ^
+        |                                       |
+        |_______________        ________________|
+                        |      |
+                       _________
+                      | class D |                         
+                      |_________|                       
+
+
+
+
+```
+`example w/ virual base`
+
+
+```
+#include <iostream>
+
+class Storable {
+  public:
+    Storable(const std::string& s); // store in file named s
+    virtual void read() = 0;
+    virtual void write() = 0;
+    virtual ~Storable();
+
+  protected:
+    std::string file_name;
+    Storable(const Storable&) = delete;
+    Storable& operator=(const Storable&) = delete;
+};
+
+class Transmitter : public virtual Storable {
+  public:
+    void write() override;
+    // ...
+};
+
+class Receiver : public virtual Storable {
+  public:
+    void write() override;
+    // ...
+};
+
+class Radio : public Transmitter, public Receiver {
+  public:
+    void write() override;
+    // ...
+};
+
+
+// now our hierarchy is:
+
+
+                                     ________________ 
+                                    | class Storable | 
+                __________________  |________________|  __________________ 
+               |                                                          |
+               |                                                          |
+             ________________                               ___________________
+            | class Reciever |                             | class Transmitter |
+            |________________|                             |___________________|
+                        ^                                       ^
+                        |                                       |
+                        |_______________        ________________|
+                                        |      |
+                                     _____________
+                                    | class Radio |                         
+                                    |_____________|        
+
+/*
+Note that if we override one virtual function in one base class then we need to do it for all of em or its gon give us the error saying:
+"override of virtual funcion "Storabel::write is ambigious" 
+*/
+
+```
+
+`one more example (cus it aint like i got a job or smn)`
+
+```
+#include <iostream>
+
+struct V {
+  V(int i);
+  // ...
+};
+
+struct A {
+  A(); // default constructor
+  // ...
+};
+
+struct B : virtual V, virtual A {
+  B() :V{1} { /* ... */ }; // default constructor ; must initialize base V
+  // ...
+};
+
+class C : virtual V {
+  public:
+    C(int i) : V{i} { /* ... */ }; // must initialize base V
+    // ...
+};
+
+class D : virtual public B, virtual public C {
+
+    // implicitly gets the virtual base V from B and C
+    // implicitly gets virtual base A from B
+
+  public:
+    D() { /* ... */ } // error : no default constructor for C or V
+    D(int i) :C{i} { /* ... */ }; // error : no default constructor for V
+    D(int i, int j) :V{i}, C{j} { /* ... */ } // OK
+    // ...
+};
+
+// well i think now yall can guess the hierarchy of these if not then fuck bruh u dumb as hell.
+
+
+     _________                               _________
+    | class V |                             | class A |
+    |_________|                             |_________|
+
+        ^                                        ^
+        |    ____________________________________|
+        |___|____________________________________
+        |   |                                    |
+        |   |                                    |
+     _________                               _________
+    | class B |                             | class C |
+    |_________|                             |_________|
+        ^                                       ^
+        |                                       |
+        |_______________        ________________|
+                        |      |
+                       _________
+                      | class D |                         
+                      |_________|        
+
+// Fuck it took me shit ton of time to make this shit.
+
+```
+
+<blockquote>Tip: Use a virtual base to represent something common to some, but not all, classes in a hierarchy. </blockquote>
+
+<br>
+
+### Runtime Type Information (RTTI)
+the use of type information at runtime is reffered to as RTTI. there are 3 main Cxx language elements to runtime type information
+
+* [dynamic_cast](#dynamic-cast) used for conversion of polymorphic types
+* [typeid](#typeid) used for identifying exact type of an object
+* [type_info](#type_info) used to hold the type information returned by the typid operator
+
+
+`example`
+
+```
+void my_event_handler(BBwindow∗ pw)
+{
+    if (auto pb = dynamic_cast<Ival_box∗>(pw)) { // does pw point to an Ival_box?
+        // ...
+        int x = pb−>get_value(); // use the Ival_box
+        // ...
+    }
+    else {
+        // ... oops! cope with unexpected event ...
+    }
+}
+
+```
+
+Casting from a base class to a derived class is often called a downcast because of the convention of drawing inheritance trees growing from the root down. Similarly, a cast from a derived class to a base is called an upcast. A cast that goes from a base to a sibling class, like the cast from BBwindow to Ival_box, is called a crosscast.
+
+<br>
+
+### typeid
+
+`syntax`
+
+```
+typeid(type-id)
+
+typeid(expression)
+```
+
+the __typeid__ operator allows type of the object to be determined at runtime. The expression must point to a polymorphic type (w/ virtual functions) otherwise the result is the type_info for the static class reffered to int the expression. and pointer must be derefferenced so that object it points to is used w/t derefferencing the result will be the type_info for the pointer not what it points to
+
+`example`
+
+```
+#include<typeinfo>
+
+class B {
+public:
+	virtual void foo() {}
+};
+
+class D : public B {
+public:
+	void foo() {
+
+	}
+};
+
+int main() {
+    D* d  = new D;
+    B* b  = d;
+
+    std::cout << typeid(d).name() << '\n';
+    std::cout << typeid(*d).name() << '\n';
+    std::cout << typeid(b).name() << '\n';
+    std::cout << typeid(*b).name() << '\n';
+
+    // name() returns a C Style sring which resides in memory owned by the system so dont tryna act smart and 'delete[]' it.
+}
+
+// Output:
+class D *
+class D
+class B *
+class D
+```
+
+if the expression is derefferencing a pointer and pointer's value is 0, typeid throws __bad_typeid__ exception and if the pointer does not point to the valid object __\_\_non_rtti_object__\_\_ exception is thrown.
+
+if expression is not a pointer niether a reference to a base class of he object the result is static type of the expression and note that _static type referes to the type of an expression known at compile time_ reference (somtimes) and execution semantics are ignored when evaluating static type.
+
+`example`
+
+```
+#include <typeinfo>
+
+main() {
+    
+    std::cout << ( typeid(int) == typeid(int&) ? "True" : "False") << '\n';
+
+    // no wonder this bitch is true.
+}
+```
+
+the cool thing is we can know the types of them expressions, its so fucking helpfull when using w/ templates
+
+```
+#include<iostream>
+#include<typeinfo>
+#include<string>
+
+using namespace std::string_literals;
+
+template<typename T>
+
+void checkType(T t) {
+
+
+	if (typeid(t).name() == "int"s)
+		std::cout << "Type: int\n";
+
+	else if (typeid(t).name() == "const char *"s)
+		std::cout << "Type: C-Style String" << '\n';
+
+	else if (typeid(t).name() == "class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >"s)
+		std::cout << "Type: Cxx String" << '\n';
+}
+
+int main() {
+
+
+	checkType("smn"s);  // Cxx String
+	checkType(12);      // int
+	checkType("smn");   // C-Style String
+
+	return 0;
+}
+
+/* Fucking Cool Eh? */
+```
+
+__type_info::name__ returns a human readable format of the type and __type_info::raw_name__ returns ugly but its litstle faster than the other one so when u dont a give a shit bout performance use __name__ and when u do use __raw_name__. ps: this is what __type_info::raw_string__ of a std::string looks like ".?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@" Welcome To Cxx People!
 
 ----------------------------
 

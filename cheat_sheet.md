@@ -2504,4 +2504,93 @@ int main() {
 
 ```  
 
-all we did in above example was add default values our types. and it works like charm.  
+all we did in above example was add default values our types. and it works like charm.
+
+### Opearations as arguements
+
+we could use functions pointers or smn in the templates and smn more i guess cus i aint Cxx God. tho using function pointers is fucking cool.
+
+`example`
+
+```c++
+#include <iostream>
+
+template<class T, bool(*validate)(T t, T t2)>
+void foo(T t1, T t2) {
+
+  std::cout << std::boolalpha << validate(t1, t2) << '\n';
+}
+
+int main() {
+
+  auto val = [](int a, int b) {
+    return a > b;
+  };
+
+  foo<int, val>(12, 113);
+
+  return 0;
+}
+```
+
+simple but demons what im tryna say i guess. we could make this shit more complex like sorting in std::map yes it uses shit like this too. for example we could define our own implemenation for sorting of keys in std::map its perticularly usefull when we are dealing the case where some user defined type is the key for yo map or smn.
+
+`example w/ std::map`
+
+```c++
+#include <iostream>
+#include <map>
+#include <string>
+
+using std::string;
+
+struct Person {
+
+    Person() = default;
+    Person(string name, int age) : _name{ name }, _age{ age } { }
+
+    string getName() const { return _name;  }
+
+    private:
+        string _name;
+        int _age;
+};
+
+int main() {
+
+
+    auto sort = [](auto a, auto b) {
+        return a.getName() < b.getName();
+    };
+
+    std::map<Person, int, decltype(sort)> map{sort};
+
+    map[Person("Kanye", 12)]    = 12;
+    map[Person("T Pain", 33)]   = 33;
+    map[Person("Biggy", 8)]     = 8;
+    map[Person("Remy Ma", 21)]  = 21;
+
+
+    for (auto& x : map) {
+    std::cout << "Values: " << x.second << '\n';
+    }
+
+    system("pause");
+
+    return 0;
+}
+```
+
+default sorting for keys is "less than" i.e Ascending Order if all we want to keep em in Descending order its pretty easy to do
+
+`example`
+
+```c++
+
+std::map<std::string, int> map{};                           // Default std::less
+// or std::map<std::string, int, std::less<std::string>> map{};
+
+std::map<std::string, int, std::greate<std::string>> map{}; // From greater to lower
+
+std::map<double, int, std::greater<double>> map{};          // w/ double's
+```

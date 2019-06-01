@@ -48,7 +48,7 @@
   * [Class Template Specialization](#class-template-specialization)
   * [Default Values](#default-values)
   * [Function Teamplates](#function-templates)
-  * [Opearations as arguements](opearations-as-arguements)
+  * [Operations as arguements](#operations-as-arguements)
 * [Traverse a directory](#Search-for-files-in-a-specific-directory)
   * [Non Recursively](#non-recursively)
   * [Recursively](#recursively)
@@ -2507,7 +2507,7 @@ int main() {
 
 all we did in above example was add default values our types. and it works like charm.
 
-### Opearations as arguements
+### Operations as arguements
 
 we could use functions pointers or smn in the templates and smn more i guess cus i aint Cxx God. tho using function pointers is fucking cool.
 

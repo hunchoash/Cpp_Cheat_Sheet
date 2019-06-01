@@ -48,7 +48,7 @@
   * [Class Template Specialization](#class-template-specialization)
   * [Default Values](#default-values)
   * [Function Teamplates](#function-templates)
-  * [Opearations as arguements](Opearations-as-arguements)
+  * [Opearations as arguements](opearations-as-arguements)
 * [Traverse a directory](#Search-for-files-in-a-specific-directory)
   * [Non Recursively](#non-recursively)
   * [Recursively](#recursively)

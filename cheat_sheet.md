@@ -6,7 +6,7 @@
 * [const member functions](#const-member-functions)
 * [Conversion / Casting](#conversion-casting)
   * [Casting Types](#casting-types)
-    * [Const Cast](#const-cast) 
+    * [Const Cast](#const-cast)
     * [Dynamic Cast](#dynamic-cast)
     * [Reinterpret Cast](#reinterpret-cast)
     * [Static Cast](#static-cast)
@@ -48,7 +48,7 @@
   * [Class Template Specialization](#class-template-specialization)
   * [Default Values](#default-values)
   * [Function Teamplates](#function-templates)
-* [Value Parameters](#value-parameters)
+  * [Opearations as arguements](Opearations-as-arguements)
 * [Traverse a directory](#Search-for-files-in-a-specific-directory)
   * [Non Recursively](#non-recursively)
   * [Recursively](#recursively)
@@ -61,6 +61,7 @@
   * [override](#override)
 * [print UTF-8 characters to the console](#print-utf-8-characters-to-the-console)
 * [static member](#static-member)
+* [Value Parameters](#value-parameters)
 * [virtual](#virtual)  
 
 ## Initialization

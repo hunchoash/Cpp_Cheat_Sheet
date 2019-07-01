@@ -1,8 +1,8 @@
-# A Dope Freackn Cxx Cheat Sheet
+# A Dope Fucking Cxx Cheat Sheet
 
 * [Assertions](#assertions)
 * [boost::asio](#boostasio)
-* [Color and text Prefferences](#color-and-text-prefferences)
+* [Color and text Preferences](#color-and-text-preferences)
 * [const member functions](#const-member-functions)
 * [Conversion / Casting](#conversion-casting)
   * [Casting Types](#casting-types)
@@ -30,6 +30,13 @@
 * [Invoke Functions After Returnting from the main()](#invoke-functions-after-returnting-from-the-main)
 * [Limits](#limits)
 * [Memory measurement chart](#memory-measurement-chart)
+* [Metaprogramming](#MetaProgramming)
+  * [Type Functions](#type-functions)
+  * [Type Predicated](#type-predicates)
+  * [Recursion](#recursion)
+  * [enable_if](#enable_if)
+  * [Variadic Templates](#varadic-templates)
+  * [Forwarding](#forwarding)
 * [OS  MACROS C/C++](#os--macros-cc)
 * [Operators](#operators)
   * [Token Summery](#token-summery)
@@ -42,6 +49,10 @@
   * [weak_ptr](#weak_ptr)
 * [Some predifined Macros](#some-predifined-macros)
 * [Specify the size of the array while passed it to a fucntion](#specify-the-size-of-the-array-while-passed-it-to-a-fucntion)
+* [Standard C++ shit](#standard-cxx-shit)
+  * [Check if the type is polymorphic w/ std::is_polymorphic](#Check-if-the-type-is-polymorphic-w-std::is_polymorphic)
+  * [compile time type eval w/ std::conditional](#compile-time-type-eval-w-std::conditional)
+  * [check is the type is same w/ std::is_same](#check-is-the-type-is-same-w-std::is_same)
 * [Stop Execution of the program for some time](#stop-execution-of-the-program-for-some-time)
 * [Templates](#templates)
   * [Class Teamplates](#class-templates)
@@ -62,15 +73,15 @@
 * [print UTF-8 characters to the console](#print-utf-8-characters-to-the-console)
 * [static member](#static-member)
 * [Value Parameters](#value-parameters)
-* [virtual](#virtual)  
+* [virtual](#virtual)
 
 ## Initialization
 
-### don't ever us this
+### don't us this
 
 `auto x = {n} | int y = {n}`
 
-*use **this** instead*
+### use this instead
 
 `std::initializer_list<int> x = {n}`
 
@@ -199,7 +210,8 @@ C *c  = dynamic_cast<C *>(ap);       // NULL
 
 A& ar = dynamic_cast<A&>(*ap);       // OK.
 B& br = dynamic_cast<B&>(*ap);       // OK.
-C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast```
+C& cr = dynamic_cast<C&>(*ap);       // ERROR: std::bad_cast
+```
 
 A dynamic_cast requires a pointer or a reference to a polymorphic type in order to do a downcast or a crosscast.
 
@@ -258,7 +270,7 @@ void g(Ival_box∗ pb, Date∗ pd)
 
 ### Reinterpret Cast
 
-RC is used to convert one pointer of another pointer of any type, no matter wither the class is related to each other or not. it does not check if the pointer type and the data pointed by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
+RC is used to convert one pointer of another pointer of any type, no matter wether the class is related to each other or not. it does not check if the pointer type and the data pointed to by the pointer is same or not. and it doesn't have any return type it simply converts the pointer.
 
 ***syntax***
 `datatype *var_name = reinterpret_cast\<data_type *>(pointer variable);`
@@ -299,7 +311,7 @@ auto val = std::stoi(str);
 // val: 69
 ```
 
-theres still a lot of things like bases and position and shit so, just refer to [cppreference](https://en.cppreference.com/w/cpp/string/basic_string/stol) if u want greater details bout it.  
+theres still a lot of things like bases and position and shit so, just refer to [cppreference](#https://en.cppreference.com/w/cpp/string/basic_string/stol) if u want greater details bout it.  
 
 ---------------------------------------------------------------------------
 
@@ -371,9 +383,9 @@ if (1 != 2)
 |   Not equal                            |  expr != expr                           |
 |   Bitwise and                          |  expr & expr                            |
 |   Bitwise exclusive-or                 |  expr ˆ expr                            |
-|   Bitwise inclusive-or                 |  expr \| expr                           |
+|   Bitwise inclusive-or                 |  expr \| expr                            |
 |   Logical and                          |  expr && expr                           |
-|   Logical inclusive or                 |  expr \|\| expr                         |
+|   Logical inclusive or                 |  expr \|\| expr                           |
 |   Conditional expression               |  expr ? expr : expr                     |
 |   List                                 |  { expr-list }                          |
 |   Throw exception                      |  throw expr                             |
@@ -443,7 +455,7 @@ if (1 != 2)
 ## Function Pointer
 
 function pointer is a pointer that points to a function instead like how a normal pointer points to a variable or an object. obviously duh!
-please reffer to [learncpp](https://learncpp.com/cpp-tutorial/78-function-pointers/) for greater details. cus i'm lazy af anf i aint type all of it.
+please reffer to [learncpp](#https://learncpp.com/cpp-tutorial/78-function-pointers/) for greater details. cus i'm lazy af and i aint typin all of it.
 
 * when a function is called the execution jumps to the address of that function. cus like variables functions live at assigned address in memory.
 
@@ -521,7 +533,7 @@ int main() {
 }
 ```  
 
-* using function pointers as a callback function. so in this example we gon make a program which sors an array of ints. and depending on the callback funcion that the user is gon provide we it gon order it (ascending / descending ).
+* using function pointers as a callback function. so in this example we gon make a program which sorts an array of ints. and depending on the callback funcion that the user is gon provide we it gon order it (ascending / descending ).
 
 ```c++
 #include <algorithm>
@@ -593,7 +605,7 @@ void f1(fPtr1 fp);
 
 ### Using `std::function` (introduced in Cxx 11)
 
-std::function is an alternative for storing function pointers in Cxx, which is defined in std lib \<functional>
+std::function is an alternative for stoaring function pointers in Cxx, which is defined in std lib \<functional>
 
 `syntax`
 
@@ -619,7 +631,7 @@ int main() {
 
 ### Using `auto`
 
-however using auto is error prone, cus return type and the arguments of the function or not exposed like they do w/ __*typedef*__,  __*using*__, __*std::function*__. tho its cool if u dont give a fug bout it and lazy af.
+however using auto is error prone, cus return type and the arguments of the function or not exposed like they do w/ __*typedef*__,  __*using*__, __*std::function*__. tho its cool if u dont give a fug bout it and also if ur lazy af.
 
 `example`
 
@@ -693,6 +705,7 @@ std::string getOs() {
 * **noexcept** - indicating that the function may not throw an exception
 
 * **static** - used for linkage specification
+
 * **\[[noreturn]]** - indicating that the function will not return using the normal call/return mechanism
 
 * **virtual** - indicating that it can be overridden in a derived class
@@ -924,6 +937,115 @@ Output:
 
 ------------------
 
+## Standard Cxx Shit
+
+### Check if the type is polymorphic w/ std::is_polymorphic
+
+i.e if class or struct has atleast one virtual function or derived from it
+
+```C++
+
+#include <type_traits>
+#include <iostream>
+
+struct Foo { };
+
+struct Bar {
+
+    virtual void bar();
+};
+
+struct Baz : Bar { };
+
+int main() {
+
+    std::cout << std::boolalpha
+              << std::is_polymorphic<Foo>::value    // false
+              << std::is_polymorphic<Bar>::value    // true
+              << std::is_polymorphic<Baz>::value    // true
+              << std::endl;
+
+        // is_polymorphics<T>::value has the return value its just some metaprogramming shit u might wanna peek in that hoe.
+}
+
+
+```
+
+### compile time type eval w/ std::conditional
+
+dont need to trip on this thick bitch its just a compile time selecto between two alternatives. if its first arg evaluated to true the result (presented as the member type) is the second argument; otherwise, the result is the third argument.
+
+```c++
+
+#include <type_traits>
+#include <iostream>
+#include <typeinfo>
+
+int main() {
+
+    using Type = std::conditional<false, int, double>::type;
+    using Type2 = std::conditional<false, int, double>::type;
+
+    std::cout << typeid(Type).name() << '\n';     // int
+    std::cout << typeid(Type2).name() << '\n';    // double
+
+    // all this conditional is doing is figuring out should the Type be int or double based on a condition that we gave it as the first parameter
+
+  return 0;
+}
+```
+
+example above looks kinda dumb but look down here this could be fucking usefull eh?
+
+```c++
+
+struct Scoped { /* store shit on stack */ };
+struct Heap { /* store shit on Free Store */ };
+
+template<typename T>
+struct Container {
+
+  using type = typename std::conditional<(sizeof(T)<=on_stack_max),
+                        Scoped<T>,   // first alternative
+                        Heap<T>   // second alternative
+                        >::type;
+
+  static const int on_stack_max = /* some number */
+
+  private:
+    T* t;
+};
+
+```
+
+above example is aphcouse aint gon compile but it illustrates how we can use condisional to our advantage. enought small talk the example above is kinda like std::string if the value if less thna on_stack max then store it on stack else store it on heap.
+
+------------------
+
+### check is the type is same w/ std::is_same
+
+this shit is fucking straight forward thank fucking keanu reeves the name aint smn crazy
+
+```c++
+
+#include <type_traits>
+#include <iostream>
+
+int main() {
+
+  using IINNTT = char;
+  using type = std::conditional<true, int, double>::type;
+
+  std::cout << std::boolalpha
+            << std::is_same<int, IINNTT>::value << '\n' 
+            << std::is_same<int, type>::value << '\n'; 
+
+    // ps:  u cant use this shit with values u can only use it w/ types
+
+  return 0;
+}
+```
+
 ## Stop Execution of the program for some time
 
 ```c++
@@ -945,7 +1067,7 @@ void Matrix() {
 
 ----------------
 
-## Color and text Prefferences
+## Color and text Preferences
 
 **`Unix Specific`**
 
@@ -1531,7 +1653,7 @@ class D : public B {
 
 ### final
 
-so, in my opinion final is pretty cool cus it doesnt let u override an object again cus its litteraly final. u feel me? so the idea here is if u got a virtual function in yo base class and u wanna override it but dont want any other classes to fuck w/ it again u use override (exmaple below might explain it better ig.) and if u try to override it BOOM its an erro.
+so, in my opinion final is pretty cool cus it doesnt let u override an object again cus its litteraly final. u feel me? so the idea here is if u got a virtual function in yo base class and u wanna override it but dont want any other classes to fuck w/ it again u use override (exmaple below might explain it better ig.) and if u try to override it BOOM its an error.
 
 ```c++
 class B {
@@ -2595,3 +2717,415 @@ std::map<std::string, int, std::greate<std::string>> map{}; // From greater to l
 
 std::map<double, int, std::greater<double>> map{};          // w/ double's
 ```
+
+------------------
+
+## MetaProgramming
+
+programming that manipulates entities such as classes and functions is commonly called as metaprogramming. yeah if you didnt got nothin from that word dont worry i didnt too. just think of templates as classes and function generators and metaprogramming as a way to do computation at compile time.
+ps: Metaprogramming is also called as " Generative Programming ", " Two Level Programming ", " Multilevel Programming " etc.
+
+### Two main reasons for using metaprogramming
+
+* Improved type safety - we can get the exact type for a data structure so we dont need to do casts and shit.
+* Improved runtime performance - we can do computation at compile time and select functions to be called at compile time that way we can eliminate runtime overhead. pretty cool!
+
+### Type Functions
+
+a type function is a function that takes at least one type arg or produces at least one type as a result.
+
+```c++
+#include <iostream>
+#include <type_traits>
+#include <typeinfo>
+
+int  main() {
+
+    enum class Axis : char { x, y, z };
+    enum flags { off, x = 1, y = x << 1, z = x << 2, t = x << 3 };  
+
+    typename std::underlying_type<Axis>::type axisType;
+    using flagType = typename std::underlying_type<flags>::type;
+
+    std::cout << typeid(axisType).name();   // char
+    std::cout << typeid(flagType).name();   // int
+}
+```
+
+this shit gets very handy when used w/ smn like [std::conditional](#compile-time-type-eval-w-std::conditional) or [std::enable_if](#std::enable-if)
+
+well for sake of my keyboard lets make our won type function
+
+```c++
+#include <iostream>
+#include <type_traits>
+#include <typeinfo>
+#include <string>
+
+template <unsigned N, typename... cases> struct Select;
+
+template <unsigned N, typename T, typename... cases>
+struct Select<N, T, cases...> : Select<N - 1, cases...> {
+
+};
+
+template <typename T, typename... cases>
+struct Select<0, T, cases...> {
+    using type = T;
+};
+
+
+template<unsigned N, typename... Cases>
+using select = typename Select<N, Cases...>::type;
+
+
+int main() {
+
+    using Type = select<4, int, char, double, char*, std::string>;
+
+    Type sayIt = "Hey i am std::string";
+
+    std::cout
+        << typeid(Type).name()  << '\n'
+        << sayIt                << '\n';
+}
+```
+
+the above example works kinda like std::conditional but it could choose between N number of types. but the imp thing this example illustrates is recursion and the dopeass variadic templates. btw above example is copied from bjare's Cpp programming language book did u really think that was my shit? thank yo but no lmao.
+
+### Type Predicates
+
+A predicate is a function that returns a Boolean value
+
+``example``
+
+```c++
+
+#include <type_traits>
+
+template <typename T>
+void foo(T t) {
+
+    if (std::is_polymorphic<t>::value) {
+        // do something if its true
+    } else {
+        // do something if its false
+    }
+
+    // the ::value in is_polymorphic is a boolean value.
+    // // and i aint got write the workings and shit of is_polymorphic here cus i wrote smn bout it in the standard library section and also cus im lazy.
+}
+
+```
+
+if u dont wanna do ::value theres always _v version of these type functions
+
+```c++
+
+#include <iostream>
+#include <type_traits>
+
+struct Foo {
+    virtual void foo() { }
+};
+
+struct Bar {
+    void bar() { }
+};
+
+int main() {
+
+    std::cout
+        << std::boolalpha
+        << std::is_polymorphic_v<Foo>   // true
+        << std::is_polymorphic_v<Bar>   // false
+        << '\n';
+}
+
+```
+
+so now lets make a type predicate function to check if the given type is c style string or not
+
+```c++
+#include <iostream>
+#include <type_traits>
+#include <string>
+
+template <typename T>
+struct is_c_style_string : std::false_type { };
+
+template <>
+struct is_c_style_string<char*> : std::true_type { };
+
+template <>
+struct is_c_style_string<const char*> : std::true_type { };
+
+
+template <typename T>
+bool is_c_string(T t) {
+
+    return is_c_style_string<T>::value;
+}
+
+
+int  main() {
+
+    using namespace std::literals::string_literals;
+
+    std::cout
+    << std::boolalpha
+    << is_c_string("Hello const char*")     // true
+    << '\n'
+    << is_c_string("Hello std string."s)    // false
+    << '\n'
+    << is_c_string(12)                      // aphcourse false
+    << '\n';
+
+}
+```
+
+in the example above std::false_type and std::true_type are just two structs defined in Cxx standard library and them structs have ::value and ::type defined in them so basically if we inherit from em false_type inherited's value is false and true_type's value true. its quite handy, but as u can see in main() we cannot directly pass a string as a template parameter to our is_c_style_string<> thats why i defined is_c_string() helper function which takes in a type T and returns the ::value inside is_c_style_string<> depending on the specialization.
+
+### Recursion
+
+recursion is kidna the big part of metaprogramming cus this is how we can loop at compile time. so like always lemme take an classic example of fibonacci sequence.
+
+```c++
+#include <iostream>
+#include <type_traits>
+#include <typeinfo>
+
+template <int N>
+struct Fib {
+    const static int value = Fib<N - 1>::value + Fib<N - 2>::value;
+};
+
+template <>
+struct Fib<2> { const static int value = 2; };
+
+template <>
+struct Fib<1> { const static int value = 1; };
+
+template <>
+struct Fib<0> { const static int value = 1; };
+
+int main() {
+
+   return Fib<10>::value;   // 8
+}
+```
+
+the example above looks pretty hacky and cool but plz dont do it in real life code its cool to just mess around w/ it. this isnt the code u would wanna write 4real. u should use constexpr functions instead of this shit then. tho lets get to this example so when we are saying value = Fib\<N - 1>::value + Fib\<N - 2>::value we are in simple word using recursion.
+
+lets say if wanted to find out 5th fibonacci number ( hope i spelled it right ).
+
+1) Fib<5> - value = Fib<4> + Fib<3> -> this means it needs Fib of 4 and 3 so its gon create em
+2) Fib<4> - value = Fib<3> + Fib<2> -> in needs Fib of 3 and 2 so create 3 but dont create 2 cus we got specialization for that
+3) Fib<3> - value = Fib<2> + Fib<1> -> dont need to create em cus we got specializations for values <= 2
+
+Now that we have everyting we need we go from botton to top w/ the values
+
+3) value = Fib<2>::value + Fib<1>::value    ->  2 + 1
+2) value = Fib<3>::value + Fib<2>::value    ->  3 + 2
+3) value = Fib<4>::value + Fib<3>::value    ->  5 + 3
+
+yeah i could say templates bring shit ton of complexity to the table
+
+lemme put another example just for the sake of complexity
+
+```c++
+#include <iostream>
+
+template <int N>
+constexpr int Fact() {
+    return N * Fact<N - 1>();
+}
+
+template <>
+constexpr int Fact<1>() {
+    return 1;
+}
+
+int main() {
+
+    return Fact<5>();   // 120
+}
+```
+
+the code above is a fucking nightmare dont do this shit instead u can do smn like this
+
+```c++
+constexpr int fac(int i) {
+
+    return (i < 2) ? 1 : fac(i − 1);
+}
+
+constexpr int f3 = fac(3);
+
+// #beautifull
+```
+
+### enable_if
+
+std::enable_if is an awsome way to provide a perticular functionality for templates kinda like the specialization
+
+The good exmaple to demonstrate the use case for enable_if would be lets say u got a smart pointer class like following:
+
+```c++
+template<typename T>
+class Smart_pointer {
+    // ...
+
+    T& operator∗();     // return reference to whole object
+    T∗ operator−>();    // select a member (for classes only)
+
+    // ...
+}
+```
+
+If T is a class, we should provide operator−>(), but if T is a built-in type, we simply cannot do so (with the usual semantics). Therefore, we want a language mechanism for saying, ‘‘If this type has this property, define the following.’’ We might try the obvious
+
+```c++
+template<typename T>
+class Smart_pointer {
+    // ...
+
+    T& operator∗(); // return reference to whole object
+    if (Is_class<T>()) T∗ operator−>(); // syntax error
+    // ...
+}
+```
+
+but this shit doesnt work  C++ does not provide an if that can select among definitions based on a general condition and this is where enable_if comes into play.
+
+```c++
+template<typename T>
+class Smart_pointer {
+    // ...
+
+    T& operator∗(); // return reference to whole object
+
+    template <typename U = T>
+    std::enable_if_t<std::is_class_v<U>, U>* operator-> () { return t; }
+    // ...
+}
+```
+
+here if type U whihc is indeed T is a class then std::enable_if is gon define operator -> else no. i had o define another template inside Smart_pointer class and assing type U to be T cus if we dont do that we gon get the compile time error cus the case where T is a built in type enable_if isnt gon have type defined in it.
+
+Another and prolly the more common way to use enable_if is in the templte<>.
+
+```c++
+
+#include <iostream>
+#include <type_traits>
+
+template <typename T, typename = std::enable_if_t<std::is_integral_v<T>, T>>
+T foo(T t) {
+    return t * t;
+}
+
+int main() {
+
+    auto i = foo(1200ll);   // OK. its type is integral
+    auto ii = foo(12);      // OK. aphcourse
+    auto c = foo('c');      // OK. works for chars cus they are integral
+
+    double d = foo(12.9);   // Error. arguements does not match
+
+    const char* s = foo("Ye for president");    // Error. arguements does not match
+}
+
+```
+
+quite dumb example but it shows the point i guess.
+
+### Variadic Templates
+
+a template with at least one parameter pack is called as variadic template well aphocourse now ya wanna know whats a parameter pack welll lemme copy this shit from [cppreference.com](#cppreference.com) " A template parameter pack is a template parameter that accepts zero or more arguements (non-types, types, templates).
+A function parameter pack is a parameter that accepts zero or more function arguements.
+
+```c++
+#include <iostream>
+
+template <typename T>
+void foo(T t) {
+    std::cout << t;
+}
+
+template <typename T, typename... Args>
+void foo(T val, Args... args) {
+    std::cout << val << '\n';
+    foo(args...);
+}
+
+
+int main() {
+
+    foo("Hello World", 12, "E is best rapper of all time!", 12.99, 'c');
+
+    // output
+    /*
+        Hello World
+        12
+        E is best rapper of all time!
+        12.99
+        c
+    */
+}
+```
+
+so, lemme tryn break this shit down what i think is happening is first we are printing the first value in the pack and then when we call `foo(args...)` its extracting the pack and now arguements will be `foo(12, ...)` and when the only one value is left `foo(T t)` is printing it.
+if we tryn imagine this shit in the from of steps this'll look kinda like this ig.
+
+1) `foo("Hello Word", rest of the args...)`
+
+    print 1st arguement i.e "Hello World"
+
+2) `foo(12, rest of the args...)`
+
+    print 1st arguement i.e 12 now
+
+3) `foo("E is best rapper of all time!", rest of the args...)`
+
+    print 1st arguement i.e "E is best rapper of all time!" now
+
+4) `foo(12.99, rest of the args...)`
+
+    print 1st arguement i.e 12.99 now
+
+5) `foo('c')`
+
+     see there are no arguements other than c now so compiler isn't gon call `foo(T t, Args... args)` its gon call `foo(T t)`
+     see not the difficult!
+
+key to understanding variadic template is to undersand pack expansion when we call `foo(args...)` recursively in our `function ...` after args means yo i want this pack to be expanded so compiler will do the work for u and send arguements as `foo(1st arguement, rest of the pack...)` to the function.
+
+tbh im too lazy write down all the rules and shit u should go [here](#https://en.cppreference.com/w/cpp/language/parameter_pack) and get the complete reference.
+
+### Forwarding
+
+std::forward returns an rvalue ref to the arg if the arg is not an lval ref and if an arg is lvalue it retuns arg W/t modifying it. and One of the major uses of variadic templates is forwarding from one function to another
+
+```c++
+#include <iostream>
+
+template <typename T, typename... Args>
+void call(T&& t, Args&&... args) {
+
+    t(std::forward<Args>(args)...);
+}
+
+void foo(int a, int b) {
+
+    std::cout << a << ' ' << b << '\n';
+}
+
+int main() {
+
+    call(foo<int>, 12, 12);
+}
+```
+
+our call functioint is kida intike std::bind where u give it the function and then give the arguements for that function
+
